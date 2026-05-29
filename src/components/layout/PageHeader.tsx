@@ -11,14 +11,14 @@ export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
         {subtitle && (
           <p
             className="text-xs uppercase tracking-[0.18em] mb-1"
-            style={{ color: '#8AAF8C', fontWeight: 500 }}
+            style={{ color: '#7A9460', fontWeight: 500 }}
           >
             {subtitle}
           </p>
         )}
         <h1
           className="font-display leading-[1.05]"
-          style={{ color: '#EAF2E6', fontWeight: 500, fontSize: '1.9rem' }}
+          style={{ color: '#2E5518', fontWeight: 500, fontSize: '1.9rem' }}
         >
           {title}
         </h1>

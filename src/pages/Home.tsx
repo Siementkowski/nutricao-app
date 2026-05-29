@@ -157,7 +157,7 @@ export function Home() {
           <button
             onClick={() => setSettingsOpen(true)}
             className="w-9 h-9 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: '#1C3520', color: '#72C45A' }}
+            style={{ backgroundColor: '#EBF3D8', color: '#536B2F' }}
             aria-label="Configurações"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -173,7 +173,7 @@ export function Home() {
         {/* Progress Ring */}
         <div
           className="rounded-2xl py-6 flex justify-center"
-          style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
         >
           <ProgressRing consumed={macros.kcal} goal={goals.kcal_goal} />
         </div>
@@ -181,14 +181,14 @@ export function Home() {
         {/* Macro Bars */}
         <div
           className="rounded-2xl px-5 py-5 space-y-4"
-          style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
         >
-          <p className="text-xs uppercase tracking-wider" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+          <p className="text-xs uppercase tracking-wider" style={{ color: '#7A9460', fontWeight: 300 }}>
             Macronutrientes
           </p>
-          <MacroBar label="Proteína" value={macros.protein} goal={goals.protein_goal} color="#E8A01E" />
-          <MacroBar label="Carboidrato" value={macros.carbs} goal={goals.carbs_goal} color="#C0B428" />
-          <MacroBar label="Gordura" value={macros.fat} goal={goals.fat_goal} color="#72C45A" />
+          <MacroBar label="Proteína" value={macros.protein} goal={goals.protein_goal} color="#B29F76" />
+          <MacroBar label="Carboidrato" value={macros.carbs} goal={goals.carbs_goal} color="#748A20" />
+          <MacroBar label="Gordura" value={macros.fat} goal={goals.fat_goal} color="#536B2F" />
         </div>
 
         {/* Energy deficit/surplus card */}
@@ -197,28 +197,28 @@ export function Home() {
         {/* Água */}
         <div
           className="rounded-2xl px-5 py-5"
-          style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3EAACE" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3D8BAE" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2C6 9 4 13 4 16a8 8 0 0 0 16 0c0-3-2-7-8-14z" />
               </svg>
-              <p className="text-xs uppercase tracking-wider" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+              <p className="text-xs uppercase tracking-wider" style={{ color: '#7A9460', fontWeight: 300 }}>
                 Hidratação
               </p>
             </div>
-            <span className="text-xs" style={{ color: '#3EAACE', fontWeight: 500 }}>
+            <span className="text-xs" style={{ color: '#3D8BAE', fontWeight: 500 }}>
               {waterToday} / {waterGoal} ml
             </span>
           </div>
 
-          <div className="h-2.5 rounded-full overflow-hidden mb-4" style={{ backgroundColor: '#0D1B10' }}>
+          <div className="h-2.5 rounded-full overflow-hidden mb-4" style={{ backgroundColor: '#FDFDFB' }}>
             <div
               className="h-2.5 rounded-full"
               style={{
                 width: `${waterPct}%`,
-                backgroundColor: '#3EAACE',
+                backgroundColor: '#3D8BAE',
                 transition: 'width 0.4s ease',
               }}
             />
@@ -231,10 +231,10 @@ export function Home() {
                 onClick={() => addWater(ml)}
                 className="flex-1 py-2.5 rounded-xl text-xs"
                 style={{
-                  backgroundColor: '#0C1E26',
-                  color: '#3EAACE',
+                  backgroundColor: '#E4F3FA',
+                  color: '#3D8BAE',
                   fontWeight: 500,
-                  border: '1px solid #163040',
+                  border: '1px solid #B0D4E8',
                 }}
               >
                 +{ml}ml
@@ -245,23 +245,23 @@ export function Home() {
 
         {/* ── Treino ── */}
         <div>
-          <p className="text-xs uppercase tracking-[0.18em] mb-3 px-1" style={{ color: '#8AAF8C', fontWeight: 500 }}>
+          <p className="text-xs uppercase tracking-[0.18em] mb-3 px-1" style={{ color: '#7A9460', fontWeight: 500 }}>
             Treino
           </p>
 
-          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}>
+          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}>
 
             {/* Tab bar */}
-            <div className="flex" style={{ borderBottom: '1px solid #22362A' }}>
+            <div className="flex" style={{ borderBottom: '1px solid #D4E0B8' }}>
               {(['strength', 'cardio'] as const).map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className="flex-1 py-3 text-sm"
                   style={{
-                    color: activeTab === tab ? '#72C45A' : '#8AAF8C',
+                    color: activeTab === tab ? '#536B2F' : '#7A9460',
                     fontWeight: activeTab === tab ? 500 : 400,
-                    borderBottom: `2px solid ${activeTab === tab ? '#72C45A' : 'transparent'}`,
+                    borderBottom: `2px solid ${activeTab === tab ? '#536B2F' : 'transparent'}`,
                     transition: 'all 0.15s',
                   }}
                 >
@@ -275,13 +275,13 @@ export function Home() {
               <div className="px-4 pt-4 pb-3 space-y-3">
                 {/* Today total */}
                 {(() => { const s = getTotalByType('strength'); return s.kcal > 0 ? (
-                  <p className="text-xs" style={{ color: '#72C45A', fontWeight: 500 }}>
+                  <p className="text-xs" style={{ color: '#536B2F', fontWeight: 500 }}>
                     {s.kcal} kcal · {s.minutes} min hoje
                   </p>
                 ) : null })()}
 
                 <div>
-                  <p className="text-xs mb-2" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+                  <p className="text-xs mb-2" style={{ color: '#7A9460', fontWeight: 300 }}>
                     Registrar tempo
                   </p>
                   <div className="flex gap-2">
@@ -291,10 +291,10 @@ export function Home() {
                         onClick={() => handleStrengthAdd(min)}
                         className="flex-1 py-2.5 rounded-xl text-xs"
                         style={{
-                          backgroundColor: '#1C3520',
-                          color: '#72C45A',
+                          backgroundColor: '#EBF3D8',
+                          color: '#536B2F',
                           fontWeight: 500,
-                          border: '1px solid #2A4830',
+                          border: '1px solid #C4D9A0',
                         }}
                       >
                         +{min}m
@@ -304,7 +304,7 @@ export function Home() {
                 </div>
 
                 {exerciseCache.find(e => e.categoria === 'treino') == null && (
-                  <p className="text-xs text-center py-1" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+                  <p className="text-xs text-center py-1" style={{ color: '#7A9460', fontWeight: 300 }}>
                     Sincronize a planilha para ativar o cálculo de calorias
                   </p>
                 )}
@@ -316,7 +316,7 @@ export function Home() {
               <div className="px-4 pt-4 pb-3 space-y-3">
                 {/* Today total */}
                 {(() => { const c = getTotalByType('cardio'); return c.kcal > 0 ? (
-                  <p className="text-xs" style={{ color: '#72C45A', fontWeight: 500 }}>
+                  <p className="text-xs" style={{ color: '#536B2F', fontWeight: 500 }}>
                     {c.kcal} kcal · {c.minutes} min hoje
                   </p>
                 ) : null })()}
@@ -324,9 +324,9 @@ export function Home() {
                 {!selExercise ? (
                   /* Step 1 — choose exercise */
                   <div>
-                    <p className="text-xs mb-2" style={{ color: '#8AAF8C', fontWeight: 300 }}>Exercício</p>
+                    <p className="text-xs mb-2" style={{ color: '#7A9460', fontWeight: 300 }}>Exercício</p>
                     {cardioExercises.length === 0 ? (
-                      <p className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+                      <p className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>
                         Sincronize a planilha para ver os exercícios
                       </p>
                     ) : (
@@ -337,9 +337,9 @@ export function Home() {
                             onClick={() => { setSelExercise(ex); setSelIntensity(null); setCardioMin(0) }}
                             className="px-3 py-1.5 rounded-full text-xs"
                             style={{
-                              backgroundColor: '#1C3520',
-                              color: '#72C45A',
-                              border: '1px solid #2A4830',
+                              backgroundColor: '#EBF3D8',
+                              color: '#536B2F',
+                              border: '1px solid #C4D9A0',
                               fontWeight: 400,
                             }}
                           >
@@ -353,13 +353,13 @@ export function Home() {
                   <>
                     {/* Selected exercise + change */}
                     <div className="flex items-center justify-between">
-                      <p className="text-sm" style={{ color: '#EAF2E6', fontWeight: 500 }}>
+                      <p className="text-sm" style={{ color: '#2E5518', fontWeight: 500 }}>
                         {selExercise.exercicio}
                       </p>
                       <button
                         onClick={() => { setSelExercise(null); setSelIntensity(null); setCardioMin(0) }}
                         className="text-xs px-2 py-1 rounded-lg"
-                        style={{ color: '#8AAF8C', backgroundColor: '#0D1B10' }}
+                        style={{ color: '#7A9460', backgroundColor: '#FDFDFB' }}
                       >
                         Trocar
                       </button>
@@ -367,7 +367,7 @@ export function Home() {
 
                     {/* Step 2 — intensity */}
                     <div>
-                      <p className="text-xs mb-2" style={{ color: '#8AAF8C', fontWeight: 300 }}>Intensidade</p>
+                      <p className="text-xs mb-2" style={{ color: '#7A9460', fontWeight: 300 }}>Intensidade</p>
                       <div className="flex gap-2 flex-wrap">
                         {intensities.map(ex => (
                           <button
@@ -375,9 +375,9 @@ export function Home() {
                             onClick={() => { setSelIntensity(ex.intensidade); setCardioMin(0) }}
                             className="flex-1 py-2 rounded-xl text-xs"
                             style={{
-                              backgroundColor: selIntensity === ex.intensidade ? '#72C45A' : '#1C3520',
-                              color: selIntensity === ex.intensidade ? '#152318' : '#72C45A',
-                              border: `1px solid ${selIntensity === ex.intensidade ? '#72C45A' : '#2A4830'}`,
+                              backgroundColor: selIntensity === ex.intensidade ? '#536B2F' : '#EBF3D8',
+                              color: selIntensity === ex.intensidade ? '#FFFFFF' : '#536B2F',
+                              border: `1px solid ${selIntensity === ex.intensidade ? '#536B2F' : '#C4D9A0'}`,
                               fontWeight: selIntensity === ex.intensidade ? 500 : 400,
                               transition: 'all 0.15s',
                             }}
@@ -392,9 +392,9 @@ export function Home() {
                     {selIntensity && (
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <p className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>Tempo</p>
+                          <p className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>Tempo</p>
                           {cardioMin > 0 && (
-                            <p className="text-sm" style={{ color: '#72C45A', fontWeight: 600 }}>
+                            <p className="text-sm" style={{ color: '#536B2F', fontWeight: 600 }}>
                               {cardioMin} min
                             </p>
                           )}
@@ -406,9 +406,9 @@ export function Home() {
                               onClick={() => setCardioMin(prev => prev + min)}
                               className="flex-1 py-2.5 rounded-xl text-xs"
                               style={{
-                                backgroundColor: '#0C1E26',
-                                color: '#3EAACE',
-                                border: '1px solid #163040',
+                                backgroundColor: '#E4F3FA',
+                                color: '#3D8BAE',
+                                border: '1px solid #B0D4E8',
                                 fontWeight: 500,
                               }}
                             >
@@ -420,7 +420,7 @@ export function Home() {
                           <button
                             onClick={handleCardioRegister}
                             className="w-full py-3 rounded-xl text-sm"
-                            style={{ backgroundColor: '#72C45A', color: '#152318', fontWeight: 500 }}
+                            style={{ backgroundColor: '#536B2F', color: '#FFFFFF', fontWeight: 500 }}
                           >
                             Registrar
                           </button>
@@ -437,15 +437,15 @@ export function Home() {
               <div className="px-4 pb-4">
                 <div
                   className="rounded-xl px-4 py-3 flex items-center justify-between"
-                  style={{ backgroundColor: '#1C3520' }}
+                  style={{ backgroundColor: '#EBF3D8' }}
                 >
-                  <span className="text-xs flex-1 mr-2" style={{ color: '#72C45A', fontWeight: 400 }}>
+                  <span className="text-xs flex-1 mr-2" style={{ color: '#536B2F', fontWeight: 400 }}>
                     {toast.msg}
                   </span>
                   <button
                     onClick={handleUndo}
                     className="text-xs shrink-0"
-                    style={{ color: '#8AAF8C', fontWeight: 400 }}
+                    style={{ color: '#7A9460', fontWeight: 400 }}
                   >
                     ↩ Desfazer
                   </button>
@@ -457,7 +457,7 @@ export function Home() {
 
         {/* Meal summary cards */}
         <div>
-          <p className="text-xs uppercase tracking-[0.18em] mb-3 px-1" style={{ color: '#8AAF8C', fontWeight: 500 }}>
+          <p className="text-xs uppercase tracking-[0.18em] mb-3 px-1" style={{ color: '#7A9460', fontWeight: 500 }}>
             Refeições
           </p>
           <div className="grid grid-cols-2 gap-3">
@@ -471,27 +471,27 @@ export function Home() {
                   key={mealKey}
                   onClick={() => navigate('/refeicoes')}
                   className="rounded-2xl p-4 text-left"
-                  style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}
+                  style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
                 >
-                  <p className="text-xs mb-1" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+                  <p className="text-xs mb-1" style={{ color: '#7A9460', fontWeight: 300 }}>
                     {MEAL_LABELS[mealKey]}
                   </p>
-                  <p className="font-display" style={{ color: over ? '#EA5224' : '#EAF2E6', fontWeight: 600, lineHeight: 1.1, fontSize: '1.5rem', letterSpacing: '-0.01em' }}>
+                  <p className="font-display" style={{ color: over ? '#C0471A' : '#2E5518', fontWeight: 600, lineHeight: 1.1, fontSize: '1.5rem', letterSpacing: '-0.01em' }}>
                     {Math.round(m.kcal)}
-                    <span className="text-xs font-sans" style={{ color: '#8AAF8C', fontWeight: 400 }}> kcal</span>
+                    <span className="text-xs font-sans" style={{ color: '#7A9460', fontWeight: 400 }}> kcal</span>
                   </p>
                   {goalKcal > 0 && (
-                    <p className="text-xs mb-2" style={{ color: '#8AAF8C', fontWeight: 300 }}>
+                    <p className="text-xs mb-2" style={{ color: '#7A9460', fontWeight: 300 }}>
                       meta: {goalKcal} kcal
                     </p>
                   )}
                   {goalKcal === 0 && <div className="mb-2" />}
-                  <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#0D1B10' }}>
+                  <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#FDFDFB' }}>
                     <div
                       className="h-1 rounded-full"
                       style={{
                         width: `${pct}%`,
-                        backgroundColor: over ? '#EA5224' : '#72C45A',
+                        backgroundColor: over ? '#C0471A' : '#536B2F',
                         transition: 'width 0.4s',
                       }}
                     />

@@ -23,12 +23,12 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
           <defs>
             {/* Living gradient: deep herb green flowing into chartreuse */}
             <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#72C45A" />
-              <stop offset="100%" stopColor="#C4EA38" />
+              <stop offset="0%" stopColor="#536B2F" />
+              <stop offset="100%" stopColor="#ABEB72" />
             </linearGradient>
             <linearGradient id="ring-grad-over" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#EA5224" />
-              <stop offset="100%" stopColor="#E8A01E" />
+              <stop offset="0%" stopColor="#C0471A" />
+              <stop offset="100%" stopColor="#B29F76" />
             </linearGradient>
           </defs>
 
@@ -38,7 +38,7 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
             cy={CY}
             r={R}
             fill="none"
-            stroke="#1C3520"
+            stroke="#EBF3D8"
             strokeWidth={STROKE}
           />
           {/* Progress arc — starts at top (−90°) */}
@@ -61,11 +61,11 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
             className="font-display"
-            style={{ color: '#EAF2E6', fontSize: 52, fontWeight: 600, lineHeight: 1, letterSpacing: '-0.02em' }}
+            style={{ color: '#2E5518', fontSize: 52, fontWeight: 600, lineHeight: 1, letterSpacing: '-0.02em' }}
           >
             {Math.round(consumed)}
           </span>
-          <span className="uppercase tracking-[0.15em]" style={{ color: '#8AAF8C', fontSize: 11, fontWeight: 500, marginTop: 6 }}>
+          <span className="uppercase tracking-[0.15em]" style={{ color: '#7A9460', fontSize: 11, fontWeight: 500, marginTop: 6 }}>
             de {goal} kcal
           </span>
         </div>
@@ -74,7 +74,7 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
       {/* Below ring */}
       <p
         className="text-sm mt-2"
-        style={{ color: over ? '#EA5224' : '#72C45A', fontWeight: 500 }}
+        style={{ color: over ? '#C0471A' : '#536B2F', fontWeight: 500 }}
       >
         {over
           ? `${diff} kcal acima da meta`
