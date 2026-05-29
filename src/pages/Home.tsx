@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PageHeader } from '../components/layout/PageHeader'
 import { ProgressRing } from '../components/home/ProgressRing'
@@ -7,6 +7,9 @@ import { EnergyCard } from '../components/home/EnergyCard'
 import { PageTransition } from '../components/layout/PageTransition'
 import { SettingsModal } from '../components/settings/SettingsModal'
 import { loadMealGoals, type MealGoals } from '../lib/mealGoals'
+import { loadEnergy } from '../lib/energy'
+import { useExercise } from '../hooks/useExercise'
+import type { ExerciseCache } from '../types'
 import { useDiary } from '../hooks/useDiary'
 import { useWater } from '../hooks/useWater'
 import { useUserStore } from '../store/userStore'
@@ -50,10 +53,30 @@ export function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [mealGoals, setMealGoals] = useState<MealGoals | null>(null)
 
+  // Exercise
+  const {
+    exerciseCache,
+    fetchTodayExercise,
+    fetchExerciseCache,
+    addExerciseLog,
+    removeLastLog,
+    getTotalBurned,
+    getTotalByType,
+  } = useExercise()
+  const [activeTab, setActiveTab] = useState<'strength' | 'cardio'>('strength')
+  const [toast, setToast] = useState<{ msg: string; type: 'strength' | 'cardio' } | null>(null)
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Cardio state
+  const [selExercise, setSelExercise] = useState<ExerciseCache | null>(null)
+  const [selIntensity, setSelIntensity] = useState<string | null>(null)
+  const [cardioMin, setCardioMin] = useState(0)
+
   useEffect(() => {
     fetchTodayLogs()
     fetchTodayWater()
-  }, [fetchTodayLogs, fetchTodayWater])
+    fetchTodayExercise()
+    fetchExerciseCache()
+  }, [fetchTodayLogs, fetchTodayWater, fetchTodayExercise, fetchExerciseCache])
 
   // Load meal goals from localStorage; reload whenever settings modal closes
   useEffect(() => {
@@ -62,6 +85,66 @@ export function Home() {
 
   const macros = getDayMacros
   const waterPct = Math.min(100, (waterToday / waterGoal) * 100)
+
+  // Exercise helpers
+  const cardioExercises: ExerciseCache[] = Array.from(
+    new Map(
+      exerciseCache
+        .filter(e => e.categoria === 'cardio')
+        .map(e => [e.exercicio, e])
+    ).values()
+  ).sort((a, b) => a.exercicio.localeCompare(b.exercicio, 'pt-BR'))
+
+  const intensities = selExercise
+    ? exerciseCache.filter(e => e.exercicio === selExercise.exercicio)
+    : []
+
+  function showToast(msg: string, type: 'strength' | 'cardio') {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    setToast({ msg, type })
+    toastTimerRef.current = setTimeout(() => setToast(null), 5000)
+  }
+
+  async function handleStrengthAdd(minutes: number) {
+    const strengthEx = exerciseCache.find(e => e.categoria === 'treino')
+    if (!strengthEx) return
+    const weight = loadEnergy().weight || 70
+    const kcal = Math.round(strengthEx.kcal_por_kg_por_minuto * weight * minutes)
+    const today = new Date().toISOString().split('T')[0]
+    await addExerciseLog({
+      date: today, type: 'strength',
+      exercise_name: strengthEx.exercicio,
+      intensity: strengthEx.intensidade,
+      duration_min: minutes, kcal_burned: kcal,
+    })
+    showToast(`${minutes} min registrados — ${kcal} kcal`, 'strength')
+  }
+
+  async function handleCardioRegister() {
+    if (!selExercise || !selIntensity || cardioMin === 0) return
+    const ex = exerciseCache.find(
+      e => e.exercicio === selExercise.exercicio && e.intensidade === selIntensity
+    )
+    if (!ex) return
+    const weight = loadEnergy().weight || 70
+    const kcal = Math.round(ex.kcal_por_kg_por_minuto * weight * cardioMin)
+    const today = new Date().toISOString().split('T')[0]
+    await addExerciseLog({
+      date: today, type: 'cardio',
+      exercise_name: selExercise.exercicio,
+      intensity: selIntensity,
+      duration_min: cardioMin, kcal_burned: kcal,
+    })
+    showToast(`${selExercise.exercicio} · ${selIntensity} — ${cardioMin} min — ${kcal} kcal`, 'cardio')
+    setSelExercise(null); setSelIntensity(null); setCardioMin(0)
+  }
+
+  async function handleUndo() {
+    if (!toast) return
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    await removeLastLog(toast.type)
+    setToast(null)
+  }
 
   return (
     <>
@@ -109,7 +192,7 @@ export function Home() {
         </div>
 
         {/* Energy deficit/surplus card */}
-        <EnergyCard consumed={macros.kcal} />
+        <EnergyCard consumed={macros.kcal} workoutKcal={getTotalBurned()} />
 
         {/* Água */}
         <div
@@ -157,6 +240,218 @@ export function Home() {
                 +{ml}ml
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* ── Treino ── */}
+        <div>
+          <p className="text-xs uppercase tracking-wider mb-3 px-1" style={{ color: '#8C8880', fontWeight: 300 }}>
+            Treino
+          </p>
+
+          <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}>
+
+            {/* Tab bar */}
+            <div className="flex" style={{ borderBottom: '1px solid #E8E4DC' }}>
+              {(['strength', 'cardio'] as const).map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className="flex-1 py-3 text-sm"
+                  style={{
+                    color: activeTab === tab ? '#7C9A7E' : '#8C8880',
+                    fontWeight: activeTab === tab ? 500 : 400,
+                    borderBottom: `2px solid ${activeTab === tab ? '#7C9A7E' : 'transparent'}`,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {tab === 'strength' ? '🏋️ Musculação' : '🏃 Cardio'}
+                </button>
+              ))}
+            </div>
+
+            {/* ── Musculação panel ── */}
+            {activeTab === 'strength' && (
+              <div className="px-4 pt-4 pb-3 space-y-3">
+                {/* Today total */}
+                {(() => { const s = getTotalByType('strength'); return s.kcal > 0 ? (
+                  <p className="text-xs" style={{ color: '#5A8A5C', fontWeight: 500 }}>
+                    {s.kcal} kcal · {s.minutes} min hoje
+                  </p>
+                ) : null })()}
+
+                <div>
+                  <p className="text-xs mb-2" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    Registrar tempo
+                  </p>
+                  <div className="flex gap-2">
+                    {[1, 5, 10, 30, 60].map(min => (
+                      <button
+                        key={min}
+                        onClick={() => handleStrengthAdd(min)}
+                        className="flex-1 py-2.5 rounded-xl text-xs"
+                        style={{
+                          backgroundColor: '#EEF3EE',
+                          color: '#5A8A5C',
+                          fontWeight: 500,
+                          border: '1px solid #D4E4D5',
+                        }}
+                      >
+                        +{min}m
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {exerciseCache.find(e => e.categoria === 'treino') == null && (
+                  <p className="text-xs text-center py-1" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    Sincronize a planilha para ativar o cálculo de calorias
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* ── Cardio panel ── */}
+            {activeTab === 'cardio' && (
+              <div className="px-4 pt-4 pb-3 space-y-3">
+                {/* Today total */}
+                {(() => { const c = getTotalByType('cardio'); return c.kcal > 0 ? (
+                  <p className="text-xs" style={{ color: '#5A8A5C', fontWeight: 500 }}>
+                    {c.kcal} kcal · {c.minutes} min hoje
+                  </p>
+                ) : null })()}
+
+                {!selExercise ? (
+                  /* Step 1 — choose exercise */
+                  <div>
+                    <p className="text-xs mb-2" style={{ color: '#8C8880', fontWeight: 300 }}>Exercício</p>
+                    {cardioExercises.length === 0 ? (
+                      <p className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>
+                        Sincronize a planilha para ver os exercícios
+                      </p>
+                    ) : (
+                      <div className="flex flex-wrap gap-2">
+                        {cardioExercises.map(ex => (
+                          <button
+                            key={ex.exercicio}
+                            onClick={() => { setSelExercise(ex); setSelIntensity(null); setCardioMin(0) }}
+                            className="px-3 py-1.5 rounded-full text-xs"
+                            style={{
+                              backgroundColor: '#EEF3EE',
+                              color: '#5A8A5C',
+                              border: '1px solid #D4E4D5',
+                              fontWeight: 400,
+                            }}
+                          >
+                            {ex.exercicio}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {/* Selected exercise + change */}
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 500 }}>
+                        {selExercise.exercicio}
+                      </p>
+                      <button
+                        onClick={() => { setSelExercise(null); setSelIntensity(null); setCardioMin(0) }}
+                        className="text-xs px-2 py-1 rounded-lg"
+                        style={{ color: '#8C8880', backgroundColor: '#F7F5F0' }}
+                      >
+                        Trocar
+                      </button>
+                    </div>
+
+                    {/* Step 2 — intensity */}
+                    <div>
+                      <p className="text-xs mb-2" style={{ color: '#8C8880', fontWeight: 300 }}>Intensidade</p>
+                      <div className="flex gap-2 flex-wrap">
+                        {intensities.map(ex => (
+                          <button
+                            key={ex.intensidade}
+                            onClick={() => { setSelIntensity(ex.intensidade); setCardioMin(0) }}
+                            className="flex-1 py-2 rounded-xl text-xs"
+                            style={{
+                              backgroundColor: selIntensity === ex.intensidade ? '#7C9A7E' : '#EEF3EE',
+                              color: selIntensity === ex.intensidade ? '#FFFFFF' : '#5A8A5C',
+                              border: `1px solid ${selIntensity === ex.intensidade ? '#7C9A7E' : '#D4E4D5'}`,
+                              fontWeight: selIntensity === ex.intensidade ? 500 : 400,
+                              transition: 'all 0.15s',
+                            }}
+                          >
+                            {ex.intensidade}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Step 3 — time (only after intensity) */}
+                    {selIntensity && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>Tempo</p>
+                          {cardioMin > 0 && (
+                            <p className="text-sm" style={{ color: '#7C9A7E', fontWeight: 600 }}>
+                              {cardioMin} min
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          {[1, 5, 10, 30, 60].map(min => (
+                            <button
+                              key={min}
+                              onClick={() => setCardioMin(prev => prev + min)}
+                              className="flex-1 py-2.5 rounded-xl text-xs"
+                              style={{
+                                backgroundColor: '#F0F6FA',
+                                color: '#7BA7BC',
+                                border: '1px solid #D8EAF2',
+                                fontWeight: 500,
+                              }}
+                            >
+                              +{min}m
+                            </button>
+                          ))}
+                        </div>
+                        {cardioMin > 0 && (
+                          <button
+                            onClick={handleCardioRegister}
+                            className="w-full py-3 rounded-xl text-sm"
+                            style={{ backgroundColor: '#7C9A7E', color: '#FFFFFF', fontWeight: 500 }}
+                          >
+                            Registrar
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Toast / undo */}
+            {toast && (
+              <div className="px-4 pb-4">
+                <div
+                  className="rounded-xl px-4 py-3 flex items-center justify-between"
+                  style={{ backgroundColor: '#EEF3EE' }}
+                >
+                  <span className="text-xs flex-1 mr-2" style={{ color: '#5A8A5C', fontWeight: 400 }}>
+                    {toast.msg}
+                  </span>
+                  <button
+                    onClick={handleUndo}
+                    className="text-xs shrink-0"
+                    style={{ color: '#8C8880', fontWeight: 400 }}
+                  >
+                    ↩ Desfazer
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

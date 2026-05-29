@@ -39,6 +39,10 @@ export function calcTMB(s: EnergySettings): number {
   return Math.round(s.sex === 'male' ? base + 5 : base - 161)
 }
 
+export function calcTDEEBase(s: EnergySettings): number {
+  return Math.round(calcTMB(s) * s.activity)
+}
+
 export function calcTDEE(s: EnergySettings): number {
   return Math.round(calcTMB(s) * s.activity + s.workout)
 }

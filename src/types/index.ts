@@ -44,6 +44,25 @@ export interface UserGoals {
   water_goal_ml: number
 }
 
+export interface ExerciseLog {
+  id: string
+  date: string
+  type: 'strength' | 'cardio'
+  exercise_name: string | null
+  intensity: string | null
+  duration_min: number
+  kcal_burned: number
+  created_at: string
+}
+
+export interface ExerciseCache {
+  id: string
+  exercicio: string
+  categoria: string
+  intensidade: string
+  kcal_por_kg_por_minuto: number
+}
+
 export interface DietEntry {
   id: string
   meal_type: string

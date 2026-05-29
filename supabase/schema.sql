@@ -62,6 +62,26 @@ CREATE TABLE food_cache (
   imported_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+CREATE TABLE exercise_log (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  date DATE NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('strength', 'cardio')),
+  exercise_name TEXT,
+  intensity TEXT,
+  duration_min INTEGER NOT NULL,
+  kcal_burned NUMERIC NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE exercise_cache (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  exercicio TEXT NOT NULL,
+  categoria TEXT NOT NULL,
+  intensidade TEXT NOT NULL,
+  kcal_por_kg_por_minuto NUMERIC NOT NULL,
+  imported_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- RLS desabilitado (app pessoal sem auth)
 ALTER TABLE food_log DISABLE ROW LEVEL SECURITY;
 ALTER TABLE water_log DISABLE ROW LEVEL SECURITY;
@@ -69,3 +89,5 @@ ALTER TABLE weight_log DISABLE ROW LEVEL SECURITY;
 ALTER TABLE user_goals DISABLE ROW LEVEL SECURITY;
 ALTER TABLE diet_cache DISABLE ROW LEVEL SECURITY;
 ALTER TABLE food_cache DISABLE ROW LEVEL SECURITY;
+ALTER TABLE exercise_log DISABLE ROW LEVEL SECURITY;
+ALTER TABLE exercise_cache DISABLE ROW LEVEL SECURITY;

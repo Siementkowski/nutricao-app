@@ -69,7 +69,8 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       if (foodsRes.data) setFoods(foodsRes.data as any)
       if (dietRes.data) setDietEntries(dietRes.data as any)
       setSyncState('success')
-      setSyncMsg(`${result.foods} alimentos · ${result.diet} itens de dieta importados`)
+      const exMsg = result.exercises > 0 ? ` · ${result.exercises} exercícios` : ''
+      setSyncMsg(`${result.foods} alimentos · ${result.diet} itens de dieta${exMsg}`)
     } catch (e: any) {
       setSyncState('error')
       setSyncMsg(e.message || 'Erro desconhecido')

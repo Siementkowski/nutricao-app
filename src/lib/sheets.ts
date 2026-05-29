@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { DietEntry, Food } from '../types'
+import type { DietEntry, Food, ExerciseCache } from '../types'
 
 const SHEET_URL = (sheetId: string, tab: string) =>
   `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`
@@ -94,6 +94,21 @@ export async function fetchDietFromSheets(sheetId: string): Promise<Omit<DietEnt
   })).filter(e => e.food_name.length > 0)
 }
 
+export async function fetchExercisesFromSheets(sheetId: string): Promise<Omit<ExerciseCache, 'id' | 'imported_at'>[]> {
+  const res = await fetch(SHEET_URL(sheetId, 'Exercicios'))
+  if (!res.ok) throw new Error(`Erro ao buscar exercícios (${res.status})`)
+  const text = await res.text()
+  const rows = parseCSV(text)
+  if (rows.length < 2) return []
+
+  return rows.slice(1).map(r => ({
+    exercicio: r[0] || '',
+    categoria: r[1] || '',
+    intensidade: r[2] || '',
+    kcal_por_kg_por_minuto: num(r[3]),
+  })).filter(e => e.exercicio.length > 0 && e.kcal_por_kg_por_minuto > 0)
+}
+
 // ── Supabase importers ────────────────────────────────────────
 export async function importFoodsToSupabase(foods: Omit<Food, 'id'>[]): Promise<number> {
   await supabase.from('food_cache').delete().neq('id', '00000000-0000-0000-0000-000000000000')
@@ -109,10 +124,19 @@ export async function importDietToSupabase(entries: Omit<DietEntry, 'id'>[]): Pr
   return entries.length
 }
 
+export async function importExercisesToSupabase(exercises: Omit<ExerciseCache, 'id' | 'imported_at'>[]): Promise<number> {
+  await supabase.from('exercise_cache').delete().neq('id', '00000000-0000-0000-0000-000000000000')
+  if (exercises.length === 0) return 0
+  const { error } = await supabase.from('exercise_cache').insert(exercises)
+  if (error) throw new Error(error.message)
+  return exercises.length
+}
+
 // ── Combo: fetch + import ─────────────────────────────────────
 export interface SyncResult {
   foods: number
   diet: number
+  exercises: number
 }
 
 export async function syncFromSheets(sheetId: string): Promise<SyncResult> {
@@ -120,9 +144,19 @@ export async function syncFromSheets(sheetId: string): Promise<SyncResult> {
     fetchFoodsFromSheets(sheetId),
     fetchDietFromSheets(sheetId),
   ])
-  const [foodCount, dietCount] = await Promise.all([
+
+  // Exercises tab is optional — don't fail the whole sync if it's missing
+  let exercises: Omit<ExerciseCache, 'id' | 'imported_at'>[] = []
+  try {
+    exercises = await fetchExercisesFromSheets(sheetId)
+  } catch {
+    // Tab "Exercicios" may not exist yet
+  }
+
+  const [foodCount, dietCount, exerciseCount] = await Promise.all([
     importFoodsToSupabase(foods),
     importDietToSupabase(diet),
+    importExercisesToSupabase(exercises),
   ])
-  return { foods: foodCount, diet: dietCount }
+  return { foods: foodCount, diet: dietCount, exercises: exerciseCount }
 }
