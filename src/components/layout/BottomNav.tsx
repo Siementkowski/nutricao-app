@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+﻿import { NavLink } from 'react-router-dom'
 
 const tabs = [
   {
@@ -61,12 +61,14 @@ export function BottomNav() {
     <nav
       className="fixed bottom-0 left-0 right-0 z-50"
       style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #E8E4DC',
+        backgroundColor: 'rgba(251,250,244,0.82)',
+        backdropFilter: 'saturate(1.4) blur(14px)',
+        WebkitBackdropFilter: 'saturate(1.4) blur(14px)',
+        borderTop: '1px solid #E2DBC9',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >
-      <div className="flex">
+      <div className="flex max-w-lg mx-auto">
         {tabs.map((tab) => (
           <NavLink
             key={tab.to}
@@ -75,15 +77,24 @@ export function BottomNav() {
             className="flex-1"
           >
             {({ isActive }) => (
-              <div className="flex flex-col items-center gap-1 py-2.5">
-                <span style={{ color: isActive ? '#7C9A7E' : '#8C8880' }}>
+              <div className="flex flex-col items-center gap-1 pt-2 pb-2.5">
+                <span
+                  className="flex items-center justify-center rounded-full"
+                  style={{
+                    color: isActive ? '#3B6B4D' : '#8B8170',
+                    backgroundColor: isActive ? '#E3E9D6' : 'transparent',
+                    width: 44,
+                    height: 28,
+                    transition: 'all 0.2s cubic-bezier(0.22,1,0.36,1)',
+                  }}
+                >
                   {tab.icon}
                 </span>
                 <span
                   className="text-[10px] leading-none"
                   style={{
-                    color: isActive ? '#7C9A7E' : '#8C8880',
-                    fontWeight: isActive ? 500 : 400,
+                    color: isActive ? '#3B6B4D' : '#8B8170',
+                    fontWeight: isActive ? 600 : 400,
                   }}
                 >
                   {tab.label}

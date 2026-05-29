@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+﻿import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { BottomNav } from './components/layout/BottomNav'
 import { Home } from './pages/Home'
 import { Meals } from './pages/Meals'
@@ -9,10 +9,7 @@ import { Progress } from './pages/Progress'
 export default function App() {
   return (
     <BrowserRouter>
-      <div
-        className="min-h-dvh"
-        style={{ backgroundColor: '#F7F5F0' }}
-      >
+      <div className="min-h-dvh" style={{ backgroundColor: 'transparent' }}>
         <main className="max-w-lg mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />

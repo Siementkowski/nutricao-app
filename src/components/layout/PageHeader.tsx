@@ -1,4 +1,4 @@
-interface PageHeaderProps {
+﻿interface PageHeaderProps {
   title: string
   subtitle?: string
   action?: React.ReactNode
@@ -6,21 +6,24 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
   return (
-    <div className="flex items-start justify-between px-5 pt-10 pb-4">
+    <div className="flex items-end justify-between px-5 pt-11 pb-5">
       <div>
-        <h1
-          className="text-xl leading-tight"
-          style={{ color: '#2C2C2C', fontWeight: 500 }}
-        >
-          {title}
-        </h1>
         {subtitle && (
-          <p className="text-sm mt-0.5" style={{ color: '#8C8880', fontWeight: 300 }}>
+          <p
+            className="text-xs uppercase tracking-[0.18em] mb-1"
+            style={{ color: '#8B8170', fontWeight: 500 }}
+          >
             {subtitle}
           </p>
         )}
+        <h1
+          className="font-display leading-[1.05]"
+          style={{ color: '#20302A', fontWeight: 500, fontSize: '1.9rem' }}
+        >
+          {title}
+        </h1>
       </div>
-      {action && <div>{action}</div>}
+      {action && <div className="pb-1">{action}</div>}
     </div>
   )
 }

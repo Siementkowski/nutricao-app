@@ -1,4 +1,4 @@
-import type { FoodLog } from '../../types'
+﻿import type { FoodLog } from '../../types'
 
 interface FoodCardProps {
   log: FoodLog
@@ -7,17 +7,17 @@ interface FoodCardProps {
 
 export function FoodCard({ log, onDelete }: FoodCardProps) {
   return (
-    <div className="food-card-enter flex items-center gap-3 py-3" style={{ borderBottom: '1px solid #F7F5F0' }}>
+    <div className="food-card-enter flex items-center gap-3 py-3" style={{ borderBottom: '1px solid #EFEADD' }}>
       <div className="flex-1 min-w-0">
         <p
           className="text-sm truncate"
-          style={{ color: '#2C2C2C', fontWeight: 400 }}
+          style={{ color: '#20302A', fontWeight: 400 }}
         >
           {log.food_name}
         </p>
-        <p className="text-xs mt-0.5" style={{ color: '#8C8880', fontWeight: 300 }}>
+        <p className="text-xs mt-0.5" style={{ color: '#8B8170', fontWeight: 300 }}>
           {log.quantity_g}g &nbsp;·&nbsp;
-          <span style={{ color: '#8C8880' }}>
+          <span style={{ color: '#8B8170' }}>
             P {log.protein.toFixed(1)}g &nbsp;C {log.carbs.toFixed(1)}g &nbsp;G {log.fat.toFixed(1)}g
           </span>
         </p>
@@ -25,7 +25,7 @@ export function FoodCard({ log, onDelete }: FoodCardProps) {
 
       <span
         className="text-sm shrink-0"
-        style={{ color: '#C4956A', fontWeight: 600 }}
+        style={{ color: '#BE8842', fontWeight: 600 }}
       >
         {Math.round(log.kcal)} kcal
       </span>
@@ -33,7 +33,7 @@ export function FoodCard({ log, onDelete }: FoodCardProps) {
       <button
         onClick={() => onDelete(log.id)}
         className="shrink-0 w-7 h-7 flex items-center justify-center rounded-lg"
-        style={{ color: '#8C8880' }}
+        style={{ color: '#8B8170' }}
         aria-label="Remover"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

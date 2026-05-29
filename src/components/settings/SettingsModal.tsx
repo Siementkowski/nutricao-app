@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { syncFromSheets } from '../../lib/sheets'
 import { useUserStore } from '../../store/userStore'
@@ -136,22 +136,22 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       <div
         className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl overflow-y-auto"
         style={{
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#FBFAF4',
           maxHeight: '92dvh',
           animation: 'slideUp 0.25s ease',
         }}
       >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1 sticky top-0 bg-white">
-          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E8E4DC' }} />
+          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E2DBC9' }} />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 sticky top-5 bg-white z-10" style={{ borderBottom: '1px solid #E8E4DC' }}>
-          <h2 className="text-base" style={{ color: '#2C2C2C', fontWeight: 500 }}>
+        <div className="flex items-center justify-between px-5 py-4 sticky top-5 bg-white z-10" style={{ borderBottom: '1px solid #E2DBC9' }}>
+          <h2 className="text-base" style={{ color: '#20302A', fontWeight: 500 }}>
             Configurações
           </h2>
-          <button onClick={onClose} style={{ color: '#8C8880' }}>
+          <button onClick={onClose} style={{ color: '#8B8170' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -162,12 +162,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
           {/* ── Metas por refeição ── */}
           <section>
-            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
               Metas por refeição
             </p>
             <div
               className="rounded-2xl p-4 space-y-3"
-              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
             >
               {([
                 { key: 'breakfast_kcal' as keyof MealGoals, label: 'Café da manhã' },
@@ -176,12 +176,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 { key: 'snack_kcal'     as keyof MealGoals, label: 'Lanche' },
               ]).map(({ key, label }) => (
                 <div key={key} className="flex items-center justify-between gap-3">
-                  <label className="text-sm shrink-0 w-32" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                  <label className="text-sm shrink-0 w-32" style={{ color: '#20302A', fontWeight: 400 }}>
                     {label}
                   </label>
                   <div
                     className="flex items-center gap-1.5 rounded-xl px-3 py-2"
-                    style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+                    style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}
                   >
                     <input
                       type="number"
@@ -189,9 +189,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                       value={mealGoals[key] || ''}
                       onChange={e => setMealGoal(key, e.target.value)}
                       className="w-20 bg-transparent text-sm text-right outline-none"
-                      style={{ color: '#2C2C2C', fontWeight: 500 }}
+                      style={{ color: '#20302A', fontWeight: 500 }}
                     />
-                    <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>kcal</span>
+                    <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>kcal</span>
                   </div>
                 </div>
               ))}
@@ -200,9 +200,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
               {(() => {
                 const total = mealGoals.breakfast_kcal + mealGoals.lunch_kcal + mealGoals.dinner_kcal + mealGoals.snack_kcal
                 return (
-                  <div className="flex items-center justify-between pt-1" style={{ borderTop: '1px solid #F7F5F0' }}>
-                    <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>Total</span>
-                    <span className="text-xs" style={{ color: '#2C2C2C', fontWeight: 500 }}>{total} kcal</span>
+                  <div className="flex items-center justify-between pt-1" style={{ borderTop: '1px solid #EFEADD' }}>
+                    <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>Total</span>
+                    <span className="text-xs" style={{ color: '#20302A', fontWeight: 500 }}>{total} kcal</span>
                   </div>
                 )
               })()}
@@ -211,10 +211,10 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 onClick={handleSaveMealGoals}
                 className="w-full py-3 rounded-xl text-sm mt-1"
                 style={{
-                  backgroundColor: mealGoalsSaved ? '#EEF3EE' : '#F7F5F0',
-                  color: mealGoalsSaved ? '#5A8A5C' : '#2C2C2C',
+                  backgroundColor: mealGoalsSaved ? '#E3E9D6' : '#EFEADD',
+                  color: mealGoalsSaved ? '#46774F' : '#20302A',
                   fontWeight: 500,
-                  border: '1px solid #E8E4DC',
+                  border: '1px solid #E2DBC9',
                   transition: 'all 0.15s',
                 }}
               >
@@ -225,12 +225,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
           {/* ── Gasto Energético ── */}
           <section>
-            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
               Gasto energético
             </p>
             <div
               className="rounded-2xl p-4 space-y-3"
-              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
             >
               {/* Peso / Altura / Idade */}
               <div className="grid grid-cols-3 gap-2">
@@ -240,17 +240,17 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                   { key: 'age',    label: 'Idade',  unit: 'anos' },
                 ] as { key: keyof EnergySettings; label: string; unit: string }[]).map(({ key, label, unit }) => (
                   <div key={key}>
-                    <label className="text-xs block mb-1" style={{ color: '#8C8880', fontWeight: 300 }}>{label}</label>
-                    <div className="rounded-xl px-2 py-2 flex items-center gap-1" style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}>
+                    <label className="text-xs block mb-1" style={{ color: '#8B8170', fontWeight: 300 }}>{label}</label>
+                    <div className="rounded-xl px-2 py-2 flex items-center gap-1" style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}>
                       <input
                         type="number"
                         min="0"
                         value={(energy[key] as number) || ''}
                         onChange={e => setEnergyField(key, parseFloat(e.target.value) || 0)}
                         className="w-full bg-transparent text-sm text-right outline-none"
-                        style={{ color: '#2C2C2C', fontWeight: 500 }}
+                        style={{ color: '#20302A', fontWeight: 500 }}
                       />
-                      <span className="text-xs shrink-0" style={{ color: '#8C8880', fontWeight: 300 }}>{unit}</span>
+                      <span className="text-xs shrink-0" style={{ color: '#8B8170', fontWeight: 300 }}>{unit}</span>
                     </div>
                   </div>
                 ))}
@@ -258,7 +258,7 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
               {/* Sexo */}
               <div>
-                <label className="text-xs block mb-1.5" style={{ color: '#8C8880', fontWeight: 300 }}>Sexo</label>
+                <label className="text-xs block mb-1.5" style={{ color: '#8B8170', fontWeight: 300 }}>Sexo</label>
                 <div className="flex gap-2">
                   {(['male', 'female'] as const).map(s => (
                     <button
@@ -266,9 +266,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                       onClick={() => setEnergyField('sex', s)}
                       className="flex-1 py-2 rounded-xl text-sm"
                       style={{
-                        backgroundColor: energy.sex === s ? '#7C9A7E' : '#F7F5F0',
-                        color: energy.sex === s ? '#FFFFFF' : '#2C2C2C',
-                        border: `1px solid ${energy.sex === s ? '#7C9A7E' : '#E8E4DC'}`,
+                        backgroundColor: energy.sex === s ? '#3B6B4D' : '#EFEADD',
+                        color: energy.sex === s ? '#FBFAF4' : '#20302A',
+                        border: `1px solid ${energy.sex === s ? '#3B6B4D' : '#E2DBC9'}`,
                         fontWeight: 500,
                         transition: 'all 0.15s',
                       }}
@@ -281,7 +281,7 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
               {/* Nível de atividade */}
               <div>
-                <label className="text-xs block mb-1.5" style={{ color: '#8C8880', fontWeight: 300 }}>Nível de atividade</label>
+                <label className="text-xs block mb-1.5" style={{ color: '#8B8170', fontWeight: 300 }}>Nível de atividade</label>
                 <div className="grid grid-cols-2 gap-2">
                   {ACTIVITY_OPTIONS.map(opt => (
                     <button
@@ -289,9 +289,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                       onClick={() => setEnergyField('activity', opt.value)}
                       className="py-2 px-3 rounded-xl text-xs text-left"
                       style={{
-                        backgroundColor: energy.activity === opt.value ? '#7C9A7E' : '#F7F5F0',
-                        color: energy.activity === opt.value ? '#FFFFFF' : '#2C2C2C',
-                        border: `1px solid ${energy.activity === opt.value ? '#7C9A7E' : '#E8E4DC'}`,
+                        backgroundColor: energy.activity === opt.value ? '#3B6B4D' : '#EFEADD',
+                        color: energy.activity === opt.value ? '#FBFAF4' : '#20302A',
+                        border: `1px solid ${energy.activity === opt.value ? '#3B6B4D' : '#E2DBC9'}`,
                         fontWeight: energy.activity === opt.value ? 500 : 400,
                         transition: 'all 0.15s',
                       }}
@@ -304,36 +304,36 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
               {/* Gasto de treino */}
               <div className="flex items-center justify-between gap-3">
-                <label className="text-sm shrink-0" style={{ color: '#2C2C2C', fontWeight: 400 }}>Gasto de treino</label>
-                <div className="flex items-center gap-1.5 rounded-xl px-3 py-2" style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}>
+                <label className="text-sm shrink-0" style={{ color: '#20302A', fontWeight: 400 }}>Gasto de treino</label>
+                <div className="flex items-center gap-1.5 rounded-xl px-3 py-2" style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}>
                   <input
                     type="number"
                     min="0"
                     value={energy.workout || ''}
                     onChange={e => setEnergyField('workout', parseInt(e.target.value) || 0)}
                     className="w-20 bg-transparent text-sm text-right outline-none"
-                    style={{ color: '#2C2C2C', fontWeight: 500 }}
+                    style={{ color: '#20302A', fontWeight: 500 }}
                   />
-                  <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>kcal</span>
+                  <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>kcal</span>
                 </div>
               </div>
 
               {/* TMB / TDEE preview */}
               {tmb > 0 && (
-                <div className="rounded-xl px-4 py-3 flex justify-between" style={{ backgroundColor: '#EEF3EE' }}>
+                <div className="rounded-xl px-4 py-3 flex justify-between" style={{ backgroundColor: '#E3E9D6' }}>
                   <div className="text-center">
-                    <p className="text-xs mb-0.5" style={{ color: '#5A8A5C', fontWeight: 300 }}>TMB</p>
-                    <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 600 }}>{tmb} kcal</p>
+                    <p className="text-xs mb-0.5" style={{ color: '#46774F', fontWeight: 300 }}>TMB</p>
+                    <p className="text-sm" style={{ color: '#20302A', fontWeight: 600 }}>{tmb} kcal</p>
                   </div>
-                  <div className="w-px" style={{ backgroundColor: '#D4E4D5' }} />
+                  <div className="w-px" style={{ backgroundColor: '#CAD7B8' }} />
                   <div className="text-center">
-                    <p className="text-xs mb-0.5" style={{ color: '#5A8A5C', fontWeight: 300 }}>TDEE</p>
-                    <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 600 }}>{tdee} kcal</p>
+                    <p className="text-xs mb-0.5" style={{ color: '#46774F', fontWeight: 300 }}>TDEE</p>
+                    <p className="text-sm" style={{ color: '#20302A', fontWeight: 600 }}>{tdee} kcal</p>
                   </div>
-                  <div className="w-px" style={{ backgroundColor: '#D4E4D5' }} />
+                  <div className="w-px" style={{ backgroundColor: '#CAD7B8' }} />
                   <div className="text-center">
-                    <p className="text-xs mb-0.5" style={{ color: '#5A8A5C', fontWeight: 300 }}>Total</p>
-                    <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 600 }}>{tdee + energy.workout} kcal</p>
+                    <p className="text-xs mb-0.5" style={{ color: '#46774F', fontWeight: 300 }}>Total</p>
+                    <p className="text-sm" style={{ color: '#20302A', fontWeight: 600 }}>{tdee + energy.workout} kcal</p>
                   </div>
                 </div>
               )}
@@ -342,10 +342,10 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 onClick={handleSaveEnergy}
                 className="w-full py-3 rounded-xl text-sm"
                 style={{
-                  backgroundColor: energySaved ? '#EEF3EE' : '#F7F5F0',
-                  color: energySaved ? '#5A8A5C' : '#2C2C2C',
+                  backgroundColor: energySaved ? '#E3E9D6' : '#EFEADD',
+                  color: energySaved ? '#46774F' : '#20302A',
                   fontWeight: 500,
-                  border: '1px solid #E8E4DC',
+                  border: '1px solid #E2DBC9',
                   transition: 'all 0.15s',
                 }}
               >
@@ -356,14 +356,14 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
           {/* ── Sincronização ── */}
           <section>
-            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
               Google Sheets
             </p>
             <div
               className="rounded-2xl p-4"
-              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
             >
-              <label className="text-xs block mb-1.5" style={{ color: '#8C8880', fontWeight: 300 }}>
+              <label className="text-xs block mb-1.5" style={{ color: '#8B8170', fontWeight: 300 }}>
                 ID da planilha
               </label>
               <input
@@ -373,13 +373,13 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 onChange={e => setSheetId(e.target.value)}
                 className="w-full rounded-xl px-3 py-2.5 text-sm outline-none mb-3"
                 style={{
-                  backgroundColor: '#F7F5F0',
-                  border: '1px solid #E8E4DC',
-                  color: '#2C2C2C',
+                  backgroundColor: '#EFEADD',
+                  border: '1px solid #E2DBC9',
+                  color: '#20302A',
                   fontFamily: 'monospace',
                 }}
               />
-              <p className="text-xs mb-4" style={{ color: '#8C8880', fontWeight: 300 }}>
+              <p className="text-xs mb-4" style={{ color: '#8B8170', fontWeight: 300 }}>
                 Planilha precisa ter abas "Alimentos" e "Dieta" com acesso público de leitura.
               </p>
 
@@ -388,8 +388,8 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 disabled={syncState === 'loading'}
                 className="w-full py-3 rounded-xl text-sm flex items-center justify-center gap-2"
                 style={{
-                  backgroundColor: syncState === 'loading' ? '#E8E4DC' : '#7C9A7E',
-                  color: syncState === 'loading' ? '#8C8880' : '#FFFFFF',
+                  backgroundColor: syncState === 'loading' ? '#E2DBC9' : '#3B6B4D',
+                  color: syncState === 'loading' ? '#8B8170' : '#FBFAF4',
                   fontWeight: 500,
                   transition: 'all 0.15s',
                 }}
@@ -416,8 +416,8 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 <div
                   className="mt-3 px-3 py-2.5 rounded-xl text-xs"
                   style={{
-                    backgroundColor: syncState === 'success' ? '#EEF3EE' : '#FDF0EC',
-                    color: syncState === 'success' ? '#5A8A5C' : '#C47A5A',
+                    backgroundColor: syncState === 'success' ? '#E3E9D6' : '#F6E6D9',
+                    color: syncState === 'success' ? '#46774F' : '#BC6242',
                     fontWeight: 400,
                   }}
                 >
@@ -429,12 +429,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
 
           {/* ── Metas ── */}
           <section>
-            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
               Metas diárias
             </p>
             <div
               className="rounded-2xl p-4 space-y-3"
-              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
             >
               {[
                 { key: 'kcal_goal' as keyof UserGoals, label: 'Calorias', unit: 'kcal' },
@@ -444,12 +444,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 { key: 'water_goal_ml' as keyof UserGoals, label: 'Água', unit: 'ml' },
               ].map(({ key, label, unit }) => (
                 <div key={key} className="flex items-center justify-between gap-3">
-                  <label className="text-sm shrink-0 w-28" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                  <label className="text-sm shrink-0 w-28" style={{ color: '#20302A', fontWeight: 400 }}>
                     {label}
                   </label>
                   <div
                     className="flex items-center gap-1.5 rounded-xl px-3 py-2"
-                    style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+                    style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}
                   >
                     <input
                       type="number"
@@ -457,9 +457,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                       value={localGoals[key]}
                       onChange={e => setGoal(key, e.target.value)}
                       className="w-20 bg-transparent text-sm text-right outline-none"
-                      style={{ color: '#2C2C2C', fontWeight: 500 }}
+                      style={{ color: '#20302A', fontWeight: 500 }}
                     />
-                    <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>
                       {unit}
                     </span>
                   </div>
@@ -471,10 +471,10 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 disabled={savingGoals}
                 className="w-full py-3 rounded-xl text-sm mt-2"
                 style={{
-                  backgroundColor: goalsSaved ? '#EEF3EE' : '#F7F5F0',
-                  color: goalsSaved ? '#5A8A5C' : '#2C2C2C',
+                  backgroundColor: goalsSaved ? '#E3E9D6' : '#EFEADD',
+                  color: goalsSaved ? '#46774F' : '#20302A',
                   fontWeight: 500,
-                  border: '1px solid #E8E4DC',
+                  border: '1px solid #E2DBC9',
                   transition: 'all 0.15s',
                 }}
               >

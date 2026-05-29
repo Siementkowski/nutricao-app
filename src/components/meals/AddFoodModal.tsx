@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+﻿import { useState, useEffect, useCallback, useRef } from 'react'
 import { useFoods } from '../../hooks/useFoods'
 import { useDiary } from '../../hooks/useDiary'
 import type { FoodLog, Food } from '../../types'
@@ -102,7 +102,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
       <div
         className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl"
         style={{
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#FBFAF4',
           maxHeight: '92dvh',
           display: 'flex',
           flexDirection: 'column',
@@ -111,15 +111,15 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
       >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1 shrink-0">
-          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E8E4DC' }} />
+          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E2DBC9' }} />
         </div>
 
         {/* Title row */}
         <div className="flex items-center justify-between px-5 pb-4 shrink-0">
-          <h2 className="text-base" style={{ color: '#2C2C2C', fontWeight: 500 }}>
+          <h2 className="text-base" style={{ color: '#20302A', fontWeight: 500 }}>
             Adicionar alimento
           </h2>
-          <button onClick={onClose} style={{ color: '#8C8880' }}>
+          <button onClick={onClose} style={{ color: '#8B8170' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
@@ -136,8 +136,8 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                 onClick={() => setMeal(m)}
                 className="shrink-0 px-3 py-1.5 rounded-full text-xs"
                 style={{
-                  backgroundColor: meal === m ? '#7C9A7E' : '#EEF3EE',
-                  color: meal === m ? '#FFFFFF' : '#8C8880',
+                  backgroundColor: meal === m ? '#3B6B4D' : '#E3E9D6',
+                  color: meal === m ? '#FBFAF4' : '#8B8170',
                   fontWeight: meal === m ? 500 : 400,
                   transition: 'all 0.15s',
                 }}
@@ -152,9 +152,9 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
         <div className="px-5 pb-3 shrink-0">
           <div
             className="flex items-center gap-2 rounded-2xl px-4 py-3"
-            style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+            style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C8880" strokeWidth="1.8" strokeLinecap="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B8170" strokeWidth="1.8" strokeLinecap="round">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
@@ -166,10 +166,10 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               value={query}
               onChange={(e) => { setQuery(e.target.value); setSelected(null) }}
               className="flex-1 bg-transparent text-sm outline-none"
-              style={{ color: '#2C2C2C' }}
+              style={{ color: '#20302A' }}
             />
             {query && (
-              <button onClick={() => { setQuery(''); setSelected(null) }} style={{ color: '#8C8880' }}>
+              <button onClick={() => { setQuery(''); setSelected(null) }} style={{ color: '#8B8170' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -184,7 +184,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
           {!selected && results.length > 0 && (
             <div
               className="rounded-2xl overflow-hidden mb-4"
-              style={{ border: '1px solid #E8E4DC' }}
+              style={{ border: '1px solid #E2DBC9' }}
             >
               {results.map((food, i) => (
                 <button
@@ -199,19 +199,19 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                   }}
                   className="w-full flex items-center justify-between px-4 py-3 text-left"
                   style={{
-                    borderBottom: i < results.length - 1 ? '1px solid #F7F5F0' : 'none',
-                    backgroundColor: '#FFFFFF',
+                    borderBottom: i < results.length - 1 ? '1px solid #EFEADD' : 'none',
+                    backgroundColor: '#FBFAF4',
                   }}
                 >
                   <div>
-                    <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                    <p className="text-sm" style={{ color: '#20302A', fontWeight: 400 }}>
                       {food.name}
                     </p>
-                    <p className="text-xs mt-0.5" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    <p className="text-xs mt-0.5" style={{ color: '#8B8170', fontWeight: 300 }}>
                       {food.kcal_per_100g} kcal · {food.category}
                     </p>
                   </div>
-                  <span className="text-xs" style={{ color: '#7C9A7E', fontWeight: 500 }}>
+                  <span className="text-xs" style={{ color: '#3B6B4D', fontWeight: 500 }}>
                     /100g
                   </span>
                 </button>
@@ -223,10 +223,10 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
           {selected && (
             <div
               className="rounded-2xl p-4 mb-4"
-              style={{ backgroundColor: '#EEF3EE', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#E3E9D6', border: '1px solid #E2DBC9' }}
             >
               <div className="flex items-center justify-between mb-3">
-                <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 500 }}>
+                <p className="text-sm" style={{ color: '#20302A', fontWeight: 500 }}>
                   {selected.name}
                 </p>
                 <button
@@ -236,7 +236,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                     setTimeout(() => searchInputRef.current?.focus(), 50)
                   }}
                   className="text-xs px-2 py-1 rounded-lg"
-                  style={{ color: '#8C8880', backgroundColor: '#FFFFFF' }}
+                  style={{ color: '#8B8170', backgroundColor: '#FBFAF4' }}
                 >
                   Trocar
                 </button>
@@ -244,12 +244,12 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
 
               {/* Qty input */}
               <div className="flex items-center gap-3 mb-3">
-                <label className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>
+                <label className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>
                   Quantidade
                 </label>
                 <div
                   className="flex items-center gap-1 rounded-xl px-3 py-2"
-                  style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+                  style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
                 >
                   <input
                     ref={qtyInputRef}
@@ -260,9 +260,9 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                     value={qty}
                     onChange={(e) => setQty(e.target.value)}
                     className="w-16 bg-transparent text-sm text-center outline-none"
-                    style={{ color: '#2C2C2C', fontWeight: 500 }}
+                    style={{ color: '#20302A', fontWeight: 500 }}
                   />
-                  <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>g</span>
+                  <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>g</span>
                 </div>
               </div>
 
@@ -270,12 +270,12 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               {preview && (
                 <div
                   className="rounded-xl px-3 py-2.5 flex items-center justify-between"
-                  style={{ backgroundColor: '#FFFFFF' }}
+                  style={{ backgroundColor: '#FBFAF4' }}
                 >
-                  <span className="text-sm" style={{ color: '#C4956A', fontWeight: 600 }}>
+                  <span className="text-sm" style={{ color: '#BE8842', fontWeight: 600 }}>
                     {preview.kcal} kcal
                   </span>
-                  <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>
+                  <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>
                     P {preview.protein}g · C {preview.carbs}g · G {preview.fat}g
                   </span>
                 </div>
@@ -284,21 +284,21 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
           )}
 
           {!selected && results.length === 0 && query.length > 0 && (
-            <p className="text-center text-sm py-6" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-center text-sm py-6" style={{ color: '#8B8170', fontWeight: 300 }}>
               Nenhum alimento encontrado
             </p>
           )}
         </div>
 
         {/* Add button */}
-        <div className="px-5 pt-2 pb-8 shrink-0" style={{ borderTop: '1px solid #E8E4DC' }}>
+        <div className="px-5 pt-2 pb-8 shrink-0" style={{ borderTop: '1px solid #E2DBC9' }}>
           <button
             onClick={handleAdd}
             disabled={!selected || !preview || saving}
             className="w-full py-4 rounded-2xl text-sm"
             style={{
-              backgroundColor: selected && preview ? '#7C9A7E' : '#E8E4DC',
-              color: selected && preview ? '#FFFFFF' : '#8C8880',
+              backgroundColor: selected && preview ? '#3B6B4D' : '#E2DBC9',
+              color: selected && preview ? '#FBFAF4' : '#8B8170',
               fontWeight: 500,
               transition: 'all 0.15s',
             }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { MealSection } from '../components/meals/MealSection'
 import { AddFoodModal } from '../components/meals/AddFoodModal'

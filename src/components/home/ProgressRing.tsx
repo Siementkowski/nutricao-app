@@ -14,20 +14,31 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
   const over = consumed > goal
   const diff = Math.abs(Math.round(consumed - goal))
 
-  const ringColor = over ? '#C47A5A' : '#7C9A7E'
   const offset = CIRCUMFERENCE * (1 - Math.min(pct, 1))
 
   return (
     <div className="flex flex-col items-center">
       <div className="relative" style={{ width: 200, height: 200 }}>
         <svg width="200" height="200" viewBox="0 0 200 200">
+          <defs>
+            {/* Living gradient: deep herb green flowing into chartreuse */}
+            <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3B6B4D" />
+              <stop offset="100%" stopColor="#A8D24A" />
+            </linearGradient>
+            <linearGradient id="ring-grad-over" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#BC6242" />
+              <stop offset="100%" stopColor="#E0A24A" />
+            </linearGradient>
+          </defs>
+
           {/* Track */}
           <circle
             cx={CX}
             cy={CY}
             r={R}
             fill="none"
-            stroke="#EEF3EE"
+            stroke="#E3E9D6"
             strokeWidth={STROKE}
           />
           {/* Progress arc — starts at top (−90°) */}
@@ -36,22 +47,25 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
             cy={CY}
             r={R}
             fill="none"
-            stroke={ringColor}
+            stroke={over ? 'url(#ring-grad-over)' : 'url(#ring-grad)'}
             strokeWidth={STROKE}
             strokeLinecap="round"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={offset}
             transform="rotate(-90 100 100)"
-            style={{ transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1), stroke 0.3s ease' }}
+            style={{ transition: 'stroke-dashoffset 0.9s cubic-bezier(0.34,1.2,0.64,1)' }}
           />
         </svg>
 
         {/* Center text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span style={{ color: '#2C2C2C', fontSize: 40, fontWeight: 600, lineHeight: 1 }}>
+          <span
+            className="font-display"
+            style={{ color: '#20302A', fontSize: 52, fontWeight: 600, lineHeight: 1, letterSpacing: '-0.02em' }}
+          >
             {Math.round(consumed)}
           </span>
-          <span style={{ color: '#8C8880', fontSize: 12, fontWeight: 300, marginTop: 4 }}>
+          <span className="uppercase tracking-[0.15em]" style={{ color: '#8B8170', fontSize: 11, fontWeight: 500, marginTop: 6 }}>
             de {goal} kcal
           </span>
         </div>
@@ -59,8 +73,8 @@ export function ProgressRing({ consumed, goal }: ProgressRingProps) {
 
       {/* Below ring */}
       <p
-        className="text-sm mt-1"
-        style={{ color: over ? '#C47A5A' : '#7C9A7E', fontWeight: 500 }}
+        className="text-sm mt-2"
+        style={{ color: over ? '#BC6242' : '#3B6B4D', fontWeight: 500 }}
       >
         {over
           ? `${diff} kcal acima da meta`

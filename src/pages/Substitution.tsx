@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { PageTransition } from '../components/layout/PageTransition'
 import { useSubstitution, type EquivType, type SubResult } from '../hooks/useSubstitution'
@@ -52,19 +52,19 @@ function FoodPicker({ label, selected, onSelect, onClear, searchFn }: FoodPicker
     return (
       <div
         className="flex items-center justify-between px-4 py-3 rounded-xl"
-        style={{ backgroundColor: '#EEF3EE', border: '1px solid #D4E4D5' }}
+        style={{ backgroundColor: '#E3E9D6', border: '1px solid #CAD7B8' }}
       >
         <div>
-          <p className="text-xs mb-0.5" style={{ color: '#8C8880', fontWeight: 300 }}>{label}</p>
-          <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 500 }}>{selected.name}</p>
-          <p className="text-xs mt-0.5" style={{ color: '#8C8880', fontWeight: 300 }}>
+          <p className="text-xs mb-0.5" style={{ color: '#8B8170', fontWeight: 300 }}>{label}</p>
+          <p className="text-sm" style={{ color: '#20302A', fontWeight: 500 }}>{selected.name}</p>
+          <p className="text-xs mt-0.5" style={{ color: '#8B8170', fontWeight: 300 }}>
             {selected.kcal_per_100g} kcal · P {selected.protein_per_100g}g · C {selected.carbs_per_100g}g · G {selected.fat_per_100g}g / 100g
           </p>
         </div>
         <button
           onClick={onClear}
           className="text-xs px-2 py-1 rounded-lg ml-3 shrink-0"
-          style={{ color: '#8C8880', backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+          style={{ color: '#8B8170', backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
         >
           Trocar
         </button>
@@ -74,12 +74,12 @@ function FoodPicker({ label, selected, onSelect, onClear, searchFn }: FoodPicker
 
   return (
     <div>
-      <p className="text-xs mb-1.5" style={{ color: '#8C8880', fontWeight: 300 }}>{label}</p>
+      <p className="text-xs mb-1.5" style={{ color: '#8B8170', fontWeight: 300 }}>{label}</p>
       <div
         className="flex items-center gap-2 rounded-xl px-3 py-2.5"
-        style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+        style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8C8880" strokeWidth="1.8" strokeLinecap="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B8170" strokeWidth="1.8" strokeLinecap="round">
           <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
         <input
@@ -89,24 +89,24 @@ function FoodPicker({ label, selected, onSelect, onClear, searchFn }: FoodPicker
           onChange={e => { setQuery(e.target.value); setOpen(true) }}
           onFocus={() => setOpen(true)}
           className="flex-1 bg-transparent text-sm outline-none"
-          style={{ color: '#2C2C2C' }}
+          style={{ color: '#20302A' }}
         />
       </div>
 
       {open && results.length > 0 && (
         <div
           className="mt-1 rounded-xl overflow-hidden"
-          style={{ border: '1px solid #E8E4DC', backgroundColor: '#FFFFFF', maxHeight: 200, overflowY: 'auto' }}
+          style={{ border: '1px solid #E2DBC9', backgroundColor: '#FBFAF4', maxHeight: 200, overflowY: 'auto' }}
         >
           {results.map((food, i) => (
             <button
               key={food.id}
               onClick={() => { onSelect(food); setQuery(''); setOpen(false) }}
               className="w-full flex items-center justify-between px-4 py-2.5 text-left"
-              style={{ borderBottom: i < results.length - 1 ? '1px solid #F7F5F0' : 'none' }}
+              style={{ borderBottom: i < results.length - 1 ? '1px solid #EFEADD' : 'none' }}
             >
-              <span className="text-sm" style={{ color: '#2C2C2C', fontWeight: 400 }}>{food.name}</span>
-              <span className="text-xs ml-2 shrink-0" style={{ color: '#8C8880', fontWeight: 300 }}>
+              <span className="text-sm" style={{ color: '#20302A', fontWeight: 400 }}>{food.name}</span>
+              <span className="text-xs ml-2 shrink-0" style={{ color: '#8B8170', fontWeight: 300 }}>
                 {food.kcal_per_100g} kcal/100g
               </span>
             </button>
@@ -120,7 +120,7 @@ function FoodPicker({ label, selected, onSelect, onClear, searchFn }: FoodPicker
 // ── Diff cell ─────────────────────────────────────────────────
 function DiffCell({ orig, sub }: { orig: number; sub: number }) {
   const diff = +(sub - orig).toFixed(1)
-  const color = diff > 0 ? '#C47A5A' : diff < 0 ? '#5A8A5C' : '#8C8880'
+  const color = diff > 0 ? '#BC6242' : diff < 0 ? '#46774F' : '#8B8170'
   return (
     <td className="text-right text-xs py-2 pr-2" style={{ color, fontWeight: diff !== 0 ? 500 : 300 }}>
       {diff > 0 ? '+' : ''}{diff}
@@ -192,9 +192,9 @@ export function Substitution() {
           {/* Original */}
           <div
             className="rounded-2xl p-4 space-y-3"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+            style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
           >
-            <p className="text-xs uppercase tracking-wider" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider" style={{ color: '#8B8170', fontWeight: 300 }}>
               Alimento original
             </p>
             <FoodPicker
@@ -206,12 +206,12 @@ export function Substitution() {
             />
             {origFood && (
               <div className="flex items-center gap-2">
-                <label className="text-xs shrink-0" style={{ color: '#8C8880', fontWeight: 300 }}>
+                <label className="text-xs shrink-0" style={{ color: '#8B8170', fontWeight: 300 }}>
                   Quantidade
                 </label>
                 <div
                   className="flex items-center gap-1 rounded-xl px-3 py-2"
-                  style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+                  style={{ backgroundColor: '#EFEADD', border: '1px solid #E2DBC9' }}
                 >
                   <input
                     type="number"
@@ -220,9 +220,9 @@ export function Substitution() {
                     value={origQty}
                     onChange={e => setOrigQty(e.target.value)}
                     className="w-16 bg-transparent text-sm text-center outline-none"
-                    style={{ color: '#2C2C2C', fontWeight: 500 }}
+                    style={{ color: '#20302A', fontWeight: 500 }}
                   />
-                  <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>g</span>
+                  <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>g</span>
                 </div>
               </div>
             )}
@@ -231,9 +231,9 @@ export function Substitution() {
           {/* Equivalence type */}
           <div
             className="rounded-2xl p-4"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+            style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
           >
-            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
               Equivalência por
             </p>
             <div className="flex gap-2 flex-wrap">
@@ -243,10 +243,10 @@ export function Substitution() {
                   onClick={() => setEquivType(key)}
                   className="px-3 py-1.5 rounded-full text-xs"
                   style={{
-                    backgroundColor: equivType === key ? '#7C9A7E' : '#F7F5F0',
-                    color: equivType === key ? '#FFFFFF' : '#8C8880',
+                    backgroundColor: equivType === key ? '#3B6B4D' : '#EFEADD',
+                    color: equivType === key ? '#FBFAF4' : '#8B8170',
                     fontWeight: equivType === key ? 500 : 400,
-                    border: `1px solid ${equivType === key ? '#7C9A7E' : '#E8E4DC'}`,
+                    border: `1px solid ${equivType === key ? '#3B6B4D' : '#E2DBC9'}`,
                     transition: 'all 0.15s',
                   }}
                 >
@@ -259,9 +259,9 @@ export function Substitution() {
           {/* Substitute */}
           <div
             className="rounded-2xl p-4 space-y-3"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+            style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
           >
-            <p className="text-xs uppercase tracking-wider" style={{ color: '#8C8880', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider" style={{ color: '#8B8170', fontWeight: 300 }}>
               Alimento substituto
             </p>
             <FoodPicker
@@ -277,23 +277,23 @@ export function Substitution() {
           {result && !result.error && (
             <div
               className="rounded-2xl p-4"
-              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+              style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
             >
-              <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+              <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8B8170', fontWeight: 300 }}>
                 Resultado
               </p>
 
               <div
                 className="rounded-xl px-4 py-3 mb-4"
-                style={{ backgroundColor: '#EEF3EE' }}
+                style={{ backgroundColor: '#E3E9D6' }}
               >
-                <p className="text-sm" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                <p className="text-sm" style={{ color: '#20302A', fontWeight: 400 }}>
                   Para equivaler em{' '}
-                  <span style={{ color: '#7C9A7E', fontWeight: 500 }}>
+                  <span style={{ color: '#3B6B4D', fontWeight: 500 }}>
                     {EQUIV_OPTIONS.find(o => o.key === equivType)?.label}
                   </span>
                   , use{' '}
-                  <span style={{ color: '#2C2C2C', fontWeight: 600, fontSize: 18 }}>
+                  <span style={{ color: '#20302A', fontWeight: 600, fontSize: 18 }}>
                     {result.qty}g
                   </span>
                   {' '}de {subFood?.name}
@@ -303,31 +303,31 @@ export function Substitution() {
               {/* Comparison table */}
               <table className="w-full text-xs">
                 <thead>
-                  <tr style={{ borderBottom: '1px solid #E8E4DC' }}>
-                    <th className="text-left py-2 pl-1" style={{ color: '#8C8880', fontWeight: 300 }}>
+                  <tr style={{ borderBottom: '1px solid #E2DBC9' }}>
+                    <th className="text-left py-2 pl-1" style={{ color: '#8B8170', fontWeight: 300 }}>
                       Nutriente
                     </th>
-                    <th className="text-right py-2 pr-2" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    <th className="text-right py-2 pr-2" style={{ color: '#8B8170', fontWeight: 300 }}>
                       Original
                     </th>
-                    <th className="text-right py-2 pr-2" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    <th className="text-right py-2 pr-2" style={{ color: '#8B8170', fontWeight: 300 }}>
                       Substituto
                     </th>
-                    <th className="text-right py-2 pr-2" style={{ color: '#8C8880', fontWeight: 300 }}>
+                    <th className="text-right py-2 pr-2" style={{ color: '#8B8170', fontWeight: 300 }}>
                       Δ
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {macroRows.map(row => (
-                    <tr key={row.label} style={{ borderBottom: '1px solid #F7F5F0' }}>
-                      <td className="py-2 pl-1 text-xs" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                    <tr key={row.label} style={{ borderBottom: '1px solid #EFEADD' }}>
+                      <td className="py-2 pl-1 text-xs" style={{ color: '#20302A', fontWeight: 400 }}>
                         {row.label}
                       </td>
-                      <td className="text-right py-2 pr-2 text-xs" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                      <td className="text-right py-2 pr-2 text-xs" style={{ color: '#20302A', fontWeight: 400 }}>
                         {row.orig}
                       </td>
-                      <td className="text-right py-2 pr-2 text-xs" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                      <td className="text-right py-2 pr-2 text-xs" style={{ color: '#20302A', fontWeight: 400 }}>
                         {row.sub}
                       </td>
                       <DiffCell orig={row.orig} sub={row.sub} />
@@ -342,8 +342,8 @@ export function Substitution() {
                 disabled={registered}
                 className="w-full mt-4 py-3 rounded-xl text-sm"
                 style={{
-                  backgroundColor: registered ? '#EEF3EE' : '#7C9A7E',
-                  color: registered ? '#5A8A5C' : '#FFFFFF',
+                  backgroundColor: registered ? '#E3E9D6' : '#3B6B4D',
+                  color: registered ? '#46774F' : '#FBFAF4',
                   fontWeight: 500,
                   transition: 'all 0.15s',
                 }}
@@ -356,9 +356,9 @@ export function Substitution() {
           {result?.error && (
             <div
               className="rounded-2xl px-4 py-3"
-              style={{ backgroundColor: '#FDF0EC', border: '1px solid #EDD5C8' }}
+              style={{ backgroundColor: '#F6E6D9', border: '1px solid #E7CDB6' }}
             >
-              <p className="text-sm" style={{ color: '#C47A5A', fontWeight: 400 }}>
+              <p className="text-sm" style={{ color: '#BC6242', fontWeight: 400 }}>
                 {result.error}
               </p>
             </div>
@@ -378,13 +378,13 @@ export function Substitution() {
           />
           <div
             className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl"
-            style={{ backgroundColor: '#FFFFFF', animation: 'slideUp 0.25s ease' }}
+            style={{ backgroundColor: '#FBFAF4', animation: 'slideUp 0.25s ease' }}
           >
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E8E4DC' }} />
+              <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#E2DBC9' }} />
             </div>
             <div className="px-5 pt-4 pb-8">
-              <p className="text-sm mb-4" style={{ color: '#2C2C2C', fontWeight: 500 }}>
+              <p className="text-sm mb-4" style={{ color: '#20302A', fontWeight: 500 }}>
                 Registrar em qual refeição?
               </p>
               <div className="grid grid-cols-2 gap-2 mb-5">
@@ -394,10 +394,10 @@ export function Substitution() {
                     onClick={() => setSelectedMeal(m)}
                     className="py-3 rounded-xl text-sm"
                     style={{
-                      backgroundColor: selectedMeal === m ? '#7C9A7E' : '#F7F5F0',
-                      color: selectedMeal === m ? '#FFFFFF' : '#2C2C2C',
+                      backgroundColor: selectedMeal === m ? '#3B6B4D' : '#EFEADD',
+                      color: selectedMeal === m ? '#FBFAF4' : '#20302A',
                       fontWeight: selectedMeal === m ? 500 : 400,
-                      border: `1px solid ${selectedMeal === m ? '#7C9A7E' : '#E8E4DC'}`,
+                      border: `1px solid ${selectedMeal === m ? '#3B6B4D' : '#E2DBC9'}`,
                       transition: 'all 0.15s',
                     }}
                   >
@@ -409,7 +409,7 @@ export function Substitution() {
                 onClick={handleRegister}
                 disabled={registering}
                 className="w-full py-4 rounded-2xl text-sm"
-                style={{ backgroundColor: '#7C9A7E', color: '#FFFFFF', fontWeight: 500 }}
+                style={{ backgroundColor: '#3B6B4D', color: '#FBFAF4', fontWeight: 500 }}
               >
                 {registering ? 'Salvando...' : `Confirmar — ${result?.qty}g de ${subFood?.name}`}
               </button>
