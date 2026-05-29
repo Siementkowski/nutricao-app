@@ -16,22 +16,22 @@ export function MacroBar({ label, value, goal, color }: MacroBarProps) {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs w-16 shrink-0" style={{ color: '#8B8170', fontWeight: 300 }}>
+      <span className="text-xs w-16 shrink-0" style={{ color: '#8AAF8C', fontWeight: 300 }}>
         {label}
       </span>
-      <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#EFEADD' }}>
+      <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: '#0D1B10' }}>
         <div
           className="h-2 rounded-full"
           style={{
             width: mounted ? `${pct}%` : '0%',
-            backgroundColor: over ? '#BC6242' : color,
+            backgroundColor: over ? '#EA5224' : color,
             transition: 'width 0.6s cubic-bezier(0.4,0,0.2,1)',
           }}
         />
       </div>
-      <span className="text-xs w-20 text-right shrink-0" style={{ color: '#20302A', fontWeight: 400 }}>
+      <span className="text-xs w-20 text-right shrink-0" style={{ color: '#EAF2E6', fontWeight: 400 }}>
         {value.toFixed(1)}
-        <span style={{ color: '#8B8170', fontWeight: 300 }}> / {goal}g</span>
+        <span style={{ color: '#8AAF8C', fontWeight: 300 }}> / {goal}g</span>
       </span>
     </div>
   )

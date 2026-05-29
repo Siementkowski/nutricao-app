@@ -38,10 +38,10 @@ function DietItem({ entry, onUseToday }: DietItemProps) {
       style={{ borderBottom: '1px solid rgba(124,154,126,0.15)' }}
     >
       <div className="flex-1 min-w-0">
-        <p className="text-sm" style={{ color: '#20302A', fontWeight: 400 }}>
+        <p className="text-sm" style={{ color: '#EAF2E6', fontWeight: 400 }}>
           {entry.food_name}
         </p>
-        <p className="text-xs mt-0.5" style={{ color: '#8B8170', fontWeight: 300 }}>
+        <p className="text-xs mt-0.5" style={{ color: '#8AAF8C', fontWeight: 300 }}>
           {entry.quantity_g}g &nbsp;·&nbsp;
           {Math.round(entry.kcal)} kcal &nbsp;·&nbsp;
           P {entry.protein.toFixed(1)}g · C {entry.carbs.toFixed(1)}g · G {entry.fat.toFixed(1)}g
@@ -51,7 +51,7 @@ function DietItem({ entry, onUseToday }: DietItemProps) {
         {entry.notes && (
           <span
             className="inline-block mt-1.5 text-xs px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: 'rgba(124,154,126,0.15)', color: '#46774F', fontWeight: 400 }}
+            style={{ backgroundColor: 'rgba(124,154,126,0.15)', color: '#72C45A', fontWeight: 400 }}
           >
             {entry.notes}
           </span>
@@ -61,7 +61,7 @@ function DietItem({ entry, onUseToday }: DietItemProps) {
         {entry.substitutions_json && (
           <span
             className="inline-block mt-1 ml-1 text-xs px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: '#EFEADD', color: '#898B45', fontWeight: 400 }}
+            style={{ backgroundColor: '#0D1B10', color: '#C0B428', fontWeight: 400 }}
           >
             Sub: {entry.substitutions_json}
           </span>
@@ -73,9 +73,9 @@ function DietItem({ entry, onUseToday }: DietItemProps) {
         disabled={state !== 'idle'}
         className="shrink-0 px-3 py-1.5 rounded-xl text-xs"
         style={{
-          backgroundColor: state === 'done' ? '#E3E9D6' : state === 'loading' ? '#EFEADD' : '#FBFAF4',
-          color: state === 'done' ? '#46774F' : '#3B6B4D',
-          border: `1px solid ${state === 'done' ? '#46774F' : '#3B6B4D'}`,
+          backgroundColor: state === 'done' ? '#1C3520' : state === 'loading' ? '#0D1B10' : '#152318',
+          color: state === 'done' ? '#72C45A' : '#72C45A',
+          border: `1px solid ${state === 'done' ? '#72C45A' : '#72C45A'}`,
           fontWeight: 500,
           transition: 'all 0.15s',
           minWidth: 72,
@@ -131,23 +131,23 @@ export function Diet() {
         {dietEntries.length === 0 ? (
           <div
             className="rounded-2xl p-8 flex flex-col items-center text-center"
-            style={{ backgroundColor: '#FBFAF4', border: '1px solid #E2DBC9' }}
+            style={{ backgroundColor: '#152318', border: '1px solid #22362A' }}
           >
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-              style={{ backgroundColor: '#E3E9D6' }}
+              style={{ backgroundColor: '#1C3520' }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B6B4D" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#72C45A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
                 <line x1="9" y1="13" x2="15" y2="13" />
                 <line x1="9" y1="17" x2="11" y2="17" />
               </svg>
             </div>
-            <p className="text-sm mb-1" style={{ color: '#20302A', fontWeight: 500 }}>
+            <p className="text-sm mb-1" style={{ color: '#EAF2E6', fontWeight: 500 }}>
               Nenhuma dieta importada
             </p>
-            <p className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>
+            <p className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>
               Acesse Configurações (⚙) na Home e sincronize sua planilha do Google Sheets.
             </p>
           </div>
@@ -161,17 +161,17 @@ export function Diet() {
               <div
                 key={mealKey}
                 className="rounded-2xl overflow-hidden"
-                style={{ border: '1px solid #CAD7B8' }}
+                style={{ border: '1px solid #2A4830' }}
               >
                 {/* Section header */}
                 <div
                   className="flex items-center justify-between px-5 py-3"
-                  style={{ backgroundColor: '#E3E9D6' }}
+                  style={{ backgroundColor: '#1C3520' }}
                 >
-                  <p className="text-sm" style={{ color: '#20302A', fontWeight: 500 }}>
+                  <p className="text-sm" style={{ color: '#EAF2E6', fontWeight: 500 }}>
                     {label}
                   </p>
-                  <span className="text-xs" style={{ color: '#46774F', fontWeight: 500 }}>
+                  <span className="text-xs" style={{ color: '#72C45A', fontWeight: 500 }}>
                     {Math.round(mealKcal)} kcal
                   </span>
                 </div>
@@ -179,7 +179,7 @@ export function Diet() {
                 {/* Items */}
                 <div
                   className="px-5"
-                  style={{ backgroundColor: '#F4F1E8' }}
+                  style={{ backgroundColor: '#1A2C1C' }}
                 >
                   {entries.map(entry => (
                     <DietItem

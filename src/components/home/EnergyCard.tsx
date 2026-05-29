@@ -20,9 +20,9 @@ export function EnergyCard({ consumed, workoutKcal }: EnergyCardProps) {
   const deficit = totalSpent - consumed
   const isDeficit = deficit > 0
   const label = isDeficit ? 'Déficit' : 'Superávit'
-  const color = isDeficit ? '#46774F' : '#BC6242'
-  const bgColor = isDeficit ? '#E3E9D6' : '#F6E6D9'
-  const borderColor = isDeficit ? '#CAD7B8' : '#E7CDB6'
+  const color = isDeficit ? '#72C45A' : '#EA5224'
+  const bgColor = isDeficit ? '#1C3520' : '#2A1608'
+  const borderColor = isDeficit ? '#2A4830' : '#3C2412'
 
   return (
     <div
@@ -43,12 +43,12 @@ export function EnergyCard({ consumed, workoutKcal }: EnergyCardProps) {
       {/* Breakdown */}
       <div className="space-y-1.5" style={{ borderTop: `1px solid ${borderColor}`, paddingTop: 10 }}>
         <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>TDEE base</span>
-          <span className="text-xs" style={{ color: '#20302A', fontWeight: 400 }}>{tdeeBase} kcal</span>
+          <span className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>TDEE base</span>
+          <span className="text-xs" style={{ color: '#EAF2E6', fontWeight: 400 }}>{tdeeBase} kcal</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>Treino hoje</span>
-          <span className="text-xs" style={{ color: workoutKcal > 0 ? color : '#8B8170', fontWeight: workoutKcal > 0 ? 500 : 300 }}>
+          <span className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>Treino hoje</span>
+          <span className="text-xs" style={{ color: workoutKcal > 0 ? color : '#8AAF8C', fontWeight: workoutKcal > 0 ? 500 : 300 }}>
             {workoutKcal > 0 ? `+${workoutKcal}` : '0'} kcal
           </span>
         </div>
@@ -56,12 +56,12 @@ export function EnergyCard({ consumed, workoutKcal }: EnergyCardProps) {
           className="flex justify-between pt-1.5"
           style={{ borderTop: `1px solid ${borderColor}` }}
         >
-          <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>Total gasto</span>
-          <span className="text-xs" style={{ color: '#20302A', fontWeight: 600 }}>{totalSpent} kcal</span>
+          <span className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>Total gasto</span>
+          <span className="text-xs" style={{ color: '#EAF2E6', fontWeight: 600 }}>{totalSpent} kcal</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#8B8170', fontWeight: 300 }}>Consumido</span>
-          <span className="text-xs" style={{ color: '#20302A', fontWeight: 400 }}>{Math.round(consumed)} kcal</span>
+          <span className="text-xs" style={{ color: '#8AAF8C', fontWeight: 300 }}>Consumido</span>
+          <span className="text-xs" style={{ color: '#EAF2E6', fontWeight: 400 }}>{Math.round(consumed)} kcal</span>
         </div>
       </div>
     </div>

@@ -61,10 +61,10 @@ export function BottomNav() {
     <nav
       className="fixed bottom-0 left-0 right-0 z-50"
       style={{
-        backgroundColor: 'rgba(251,250,244,0.82)',
-        backdropFilter: 'saturate(1.4) blur(14px)',
-        WebkitBackdropFilter: 'saturate(1.4) blur(14px)',
-        borderTop: '1px solid #E2DBC9',
+        backgroundColor: 'rgba(13,27,16,0.88)',
+        backdropFilter: 'saturate(1.6) blur(16px)',
+        WebkitBackdropFilter: 'saturate(1.6) blur(16px)',
+        borderTop: '1px solid #22362A',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >
@@ -81,8 +81,8 @@ export function BottomNav() {
                 <span
                   className="flex items-center justify-center rounded-full"
                   style={{
-                    color: isActive ? '#3B6B4D' : '#8B8170',
-                    backgroundColor: isActive ? '#E3E9D6' : 'transparent',
+                    color: isActive ? '#72C45A' : '#8AAF8C',
+                    backgroundColor: isActive ? '#1C3520' : 'transparent',
                     width: 44,
                     height: 28,
                     transition: 'all 0.2s cubic-bezier(0.22,1,0.36,1)',
@@ -93,7 +93,7 @@ export function BottomNav() {
                 <span
                   className="text-[10px] leading-none"
                   style={{
-                    color: isActive ? '#3B6B4D' : '#8B8170',
+                    color: isActive ? '#72C45A' : '#8AAF8C',
                     fontWeight: isActive ? 600 : 400,
                   }}
                 >
