@@ -39,6 +39,8 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const [meal, setMeal] = useState<MealType>(defaultMeal)
   const [saving, setSaving] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const qtyInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => { if (open) fetchFoods() }, [open, fetchFoods])
 
@@ -157,6 +159,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             <input
+              ref={searchInputRef}
               autoFocus
               type="text"
               placeholder="Buscar alimento..."
@@ -186,7 +189,14 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               {results.map((food, i) => (
                 <button
                   key={food.id}
-                  onClick={() => { setSelected(food); setQty('100') }}
+                  onClick={() => {
+                    setSelected(food)
+                    setQty('100')
+                    // Dismiss the keyboard so the Adicionar button is visible
+                    searchInputRef.current?.blur()
+                    // Small delay so the keyboard has time to close before focusing qty
+                    setTimeout(() => qtyInputRef.current?.select(), 350)
+                  }}
                   className="w-full flex items-center justify-between px-4 py-3 text-left"
                   style={{
                     borderBottom: i < results.length - 1 ? '1px solid #F7F5F0' : 'none',
@@ -220,7 +230,11 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                   {selected.name}
                 </p>
                 <button
-                  onClick={() => { setSelected(null); setQty('') }}
+                  onClick={() => {
+                    setSelected(null)
+                    setQty('')
+                    setTimeout(() => searchInputRef.current?.focus(), 50)
+                  }}
                   className="text-xs px-2 py-1 rounded-lg"
                   style={{ color: '#8C8880', backgroundColor: '#FFFFFF' }}
                 >
@@ -238,7 +252,9 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                   style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
                 >
                   <input
+                    ref={qtyInputRef}
                     type="number"
+                    inputMode="decimal"
                     min="1"
                     max="2000"
                     value={qty}

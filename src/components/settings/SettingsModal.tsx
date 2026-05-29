@@ -5,6 +5,8 @@ import { useUserStore } from '../../store/userStore'
 import { useFoodStore } from '../../store/foodStore'
 import { loadEnergy, saveEnergy, calcTMB, calcTDEE, ACTIVITY_OPTIONS } from '../../lib/energy'
 import type { EnergySettings } from '../../lib/energy'
+import { loadMealGoals, saveMealGoals, MEAL_GOAL_DEFAULTS } from '../../lib/mealGoals'
+import type { MealGoals } from '../../lib/mealGoals'
 import type { UserGoals } from '../../types'
 
 const LS_KEY = 'nutricao_sheet_id'
@@ -31,6 +33,9 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
   const [energy, setEnergy] = useState<EnergySettings>(defaultEnergy)
   const [energySaved, setEnergySaved] = useState(false)
 
+  const [mealGoals, setMealGoals] = useState<MealGoals>(MEAL_GOAL_DEFAULTS)
+  const [mealGoalsSaved, setMealGoalsSaved] = useState(false)
+
   const tmb = energy.weight > 0 && energy.height > 0 && energy.age > 0 ? calcTMB(energy) : 0
   const tdee = tmb > 0 ? calcTDEE(energy) : 0
 
@@ -43,6 +48,8 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       setGoalsSaved(false)
       setEnergy(loadEnergy())
       setEnergySaved(false)
+      setMealGoals(loadMealGoals())
+      setMealGoalsSaved(false)
     }
   }, [open, goals])
 
@@ -105,6 +112,16 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
     setEnergy(prev => ({ ...prev, [key]: value }))
   }
 
+  function handleSaveMealGoals() {
+    saveMealGoals(mealGoals)
+    setMealGoalsSaved(true)
+    setTimeout(() => setMealGoalsSaved(false), 2000)
+  }
+
+  function setMealGoal(key: keyof MealGoals, value: string) {
+    setMealGoals(prev => ({ ...prev, [key]: parseInt(value) || 0 }))
+  }
+
   if (!open) return null
 
   return (
@@ -141,6 +158,69 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
         </div>
 
         <div className="px-5 py-5 space-y-6 pb-12">
+
+          {/* ── Metas por refeição ── */}
+          <section>
+            <p className="text-xs uppercase tracking-wider mb-3" style={{ color: '#8C8880', fontWeight: 300 }}>
+              Metas por refeição
+            </p>
+            <div
+              className="rounded-2xl p-4 space-y-3"
+              style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8E4DC' }}
+            >
+              {([
+                { key: 'breakfast_kcal' as keyof MealGoals, label: 'Café da manhã' },
+                { key: 'lunch_kcal'     as keyof MealGoals, label: 'Almoço' },
+                { key: 'dinner_kcal'    as keyof MealGoals, label: 'Jantar' },
+                { key: 'snack_kcal'     as keyof MealGoals, label: 'Lanche' },
+              ]).map(({ key, label }) => (
+                <div key={key} className="flex items-center justify-between gap-3">
+                  <label className="text-sm shrink-0 w-32" style={{ color: '#2C2C2C', fontWeight: 400 }}>
+                    {label}
+                  </label>
+                  <div
+                    className="flex items-center gap-1.5 rounded-xl px-3 py-2"
+                    style={{ backgroundColor: '#F7F5F0', border: '1px solid #E8E4DC' }}
+                  >
+                    <input
+                      type="number"
+                      min="0"
+                      value={mealGoals[key] || ''}
+                      onChange={e => setMealGoal(key, e.target.value)}
+                      className="w-20 bg-transparent text-sm text-right outline-none"
+                      style={{ color: '#2C2C2C', fontWeight: 500 }}
+                    />
+                    <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>kcal</span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Total check */}
+              {(() => {
+                const total = mealGoals.breakfast_kcal + mealGoals.lunch_kcal + mealGoals.dinner_kcal + mealGoals.snack_kcal
+                return (
+                  <div className="flex items-center justify-between pt-1" style={{ borderTop: '1px solid #F7F5F0' }}>
+                    <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}>Total</span>
+                    <span className="text-xs" style={{ color: '#2C2C2C', fontWeight: 500 }}>{total} kcal</span>
+                  </div>
+                )
+              })()}
+
+              <button
+                onClick={handleSaveMealGoals}
+                className="w-full py-3 rounded-xl text-sm mt-1"
+                style={{
+                  backgroundColor: mealGoalsSaved ? '#EEF3EE' : '#F7F5F0',
+                  color: mealGoalsSaved ? '#5A8A5C' : '#2C2C2C',
+                  fontWeight: 500,
+                  border: '1px solid #E8E4DC',
+                  transition: 'all 0.15s',
+                }}
+              >
+                {mealGoalsSaved ? '✓ Salvo' : 'Salvar metas por refeição'}
+              </button>
+            </div>
+          </section>
 
           {/* ── Gasto Energético ── */}
           <section>

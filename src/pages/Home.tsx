@@ -6,6 +6,7 @@ import { MacroBar } from '../components/home/MacroBar'
 import { EnergyCard } from '../components/home/EnergyCard'
 import { PageTransition } from '../components/layout/PageTransition'
 import { SettingsModal } from '../components/settings/SettingsModal'
+import { loadMealGoals, type MealGoals } from '../lib/mealGoals'
 import { useDiary } from '../hooks/useDiary'
 import { useWater } from '../hooks/useWater'
 import { useUserStore } from '../store/userStore'
@@ -34,17 +35,30 @@ const MEAL_LABELS = {
 
 type MealKey = keyof typeof MEAL_LABELS
 
+const MEAL_GOAL_KEY: Record<MealKey, keyof MealGoals> = {
+  breakfast: 'breakfast_kcal',
+  lunch:     'lunch_kcal',
+  dinner:    'dinner_kcal',
+  snack:     'snack_kcal',
+}
+
 export function Home() {
   const { fetchTodayLogs, fetchTodayWater, getDayMacros, getMealMacros } = useDiary()
   const { waterToday, goal: waterGoal, addWater } = useWater()
   const { goals } = useUserStore()
   const navigate = useNavigate()
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [mealGoals, setMealGoals] = useState<MealGoals | null>(null)
 
   useEffect(() => {
     fetchTodayLogs()
     fetchTodayWater()
   }, [fetchTodayLogs, fetchTodayWater])
+
+  // Load meal goals from localStorage; reload whenever settings modal closes
+  useEffect(() => {
+    if (!settingsOpen) setMealGoals(loadMealGoals())
+  }, [settingsOpen])
 
   const macros = getDayMacros
   const waterPct = Math.min(100, (waterToday / waterGoal) * 100)
@@ -154,9 +168,9 @@ export function Home() {
           <div className="grid grid-cols-2 gap-3">
             {(Object.keys(MEAL_LABELS) as MealKey[]).map((mealKey) => {
               const m = getMealMacros(mealKey)
-              const pct = goals.kcal_goal > 0
-                ? Math.min((m.kcal / (goals.kcal_goal / 4)) * 100, 100)
-                : 0
+              const goalKcal = mealGoals ? mealGoals[MEAL_GOAL_KEY[mealKey]] : 0
+              const pct = goalKcal > 0 ? Math.min((m.kcal / goalKcal) * 100, 100) : 0
+              const over = goalKcal > 0 && m.kcal > goalKcal
               return (
                 <button
                   key={mealKey}
@@ -167,14 +181,24 @@ export function Home() {
                   <p className="text-xs mb-1" style={{ color: '#8C8880', fontWeight: 300 }}>
                     {MEAL_LABELS[mealKey]}
                   </p>
-                  <p className="text-base mb-2" style={{ color: '#2C2C2C', fontWeight: 600 }}>
+                  <p className="text-base" style={{ color: over ? '#C47A5A' : '#2C2C2C', fontWeight: 600, lineHeight: 1.2 }}>
                     {Math.round(m.kcal)}
                     <span className="text-xs" style={{ color: '#8C8880', fontWeight: 300 }}> kcal</span>
                   </p>
+                  {goalKcal > 0 && (
+                    <p className="text-xs mb-2" style={{ color: '#8C8880', fontWeight: 300 }}>
+                      meta: {goalKcal} kcal
+                    </p>
+                  )}
+                  {goalKcal === 0 && <div className="mb-2" />}
                   <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: '#F7F5F0' }}>
                     <div
                       className="h-1 rounded-full"
-                      style={{ width: `${pct}%`, backgroundColor: '#7C9A7E', transition: 'width 0.4s' }}
+                      style={{
+                        width: `${pct}%`,
+                        backgroundColor: over ? '#C47A5A' : '#7C9A7E',
+                        transition: 'width 0.4s',
+                      }}
                     />
                   </div>
                 </button>
