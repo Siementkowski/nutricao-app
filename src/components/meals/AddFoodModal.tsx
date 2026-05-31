@@ -201,7 +201,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-5 pb-4" style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}>
+        <div className="flex-1 overflow-y-auto px-5">
           {/* Results list */}
           {!selected && results.length > 0 && (
             <div
@@ -215,10 +215,6 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                     setSelected(food)
                     setQty('100')
                     searchInputRef.current?.blur()
-                    // After keyboard closes, scroll the Add button into view
-                    setTimeout(() => {
-                      addBtnRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-                    }, 380)
                   }}
                   className="w-full flex items-center justify-between px-4 py-3 text-left"
                   style={{
@@ -292,7 +288,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               {/* Live preview */}
               {preview && (
                 <div
-                  className="rounded-xl px-3 py-2.5 flex items-center justify-between mb-3"
+                  className="rounded-xl px-3 py-2.5 flex items-center justify-between"
                   style={{ backgroundColor: '#FFFFFF' }}
                 >
                   <span className="text-sm" style={{ color: '#2D7D46', fontWeight: 600 }}>
@@ -303,27 +299,6 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                   </span>
                 </div>
               )}
-
-            </div>
-          )}
-
-          {/* Botão Adicionar — fora do card, dentro da área rolável */}
-          {preview && (
-            <div ref={addBtnRef} className="mb-4">
-              <button
-                onClick={handleAdd}
-                disabled={saving}
-                className="w-full py-3.5 rounded-xl text-sm"
-                style={{
-                  backgroundColor: '#2D7D46',
-                  color: '#FFFFFF',
-                  fontWeight: 700,
-                  transition: 'opacity 0.15s',
-                  opacity: saving ? 0.7 : 1,
-                }}
-              >
-                {saving ? 'Salvando...' : 'Adicionar'}
-              </button>
             </div>
           )}
 
@@ -333,6 +308,27 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
             </p>
           )}
         </div>
+
+        {/* Footer fixo com botão Adicionar — sempre visível acima da nav */}
+        {preview && (
+          <div className="shrink-0 px-5 pt-3 pb-4">
+            <button
+              ref={addBtnRef}
+              onClick={handleAdd}
+              disabled={saving}
+              className="w-full py-3.5 rounded-xl text-sm"
+              style={{
+                backgroundColor: '#2D7D46',
+                color: '#FFFFFF',
+                fontWeight: 700,
+                transition: 'opacity 0.15s',
+                opacity: saving ? 0.7 : 1,
+              }}
+            >
+              {saving ? 'Salvando...' : 'Adicionar'}
+            </button>
+          </div>
+        )}
 
 
       </div>
