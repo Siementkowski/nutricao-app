@@ -179,7 +179,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-5 pb-4">
+        <div className="flex-1 overflow-y-auto px-5 pb-4" style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom))' }}>
           {/* Results list */}
           {!selected && results.length > 0 && (
             <div
@@ -269,7 +269,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
               {/* Live preview */}
               {preview && (
                 <div
-                  className="rounded-xl px-3 py-2.5 flex items-center justify-between"
+                  className="rounded-xl px-3 py-2.5 flex items-center justify-between mb-3"
                   style={{ backgroundColor: '#FFFFFF' }}
                 >
                   <span className="text-sm" style={{ color: '#2D7D46', fontWeight: 600 }}>
@@ -279,6 +279,24 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                     P {preview.protein}g · C {preview.carbs}g · G {preview.fat}g
                   </span>
                 </div>
+              )}
+
+              {/* Adicionar button — inside the card, always visible */}
+              {preview && (
+                <button
+                  onClick={handleAdd}
+                  disabled={saving}
+                  className="w-full py-3.5 rounded-xl text-sm"
+                  style={{
+                    backgroundColor: '#2D7D46',
+                    color: '#FFFFFF',
+                    fontWeight: 700,
+                    transition: 'opacity 0.15s',
+                    opacity: saving ? 0.7 : 1,
+                  }}
+                >
+                  {saving ? 'Salvando...' : 'Adicionar'}
+                </button>
               )}
             </div>
           )}
@@ -290,22 +308,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
           )}
         </div>
 
-        {/* Add button */}
-        <div className="px-5 pt-2 pb-8 shrink-0" style={{ borderTop: '1px solid #EBEBEB' }}>
-          <button
-            onClick={handleAdd}
-            disabled={!selected || !preview || saving}
-            className="w-full py-4 rounded-2xl text-sm"
-            style={{
-              backgroundColor: selected && preview ? '#2D7D46' : '#EBEBEB',
-              color: selected && preview ? '#FFFFFF' : '#999999',
-              fontWeight: 500,
-              transition: 'all 0.15s',
-            }}
-          >
-            {saving ? 'Salvando...' : 'Adicionar'}
-          </button>
-        </div>
+
       </div>
 
       <style>{`
