@@ -123,9 +123,9 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
       <div
         className="fixed left-0 right-0 z-50 rounded-t-3xl"
         style={{
-          bottom: kbOffset,
+          bottom: kbOffset + 80,
           backgroundColor: '#FFFFFF',
-          maxHeight: `min(92dvh, calc(100dvh - ${kbOffset}px - 16px))`,
+          maxHeight: `min(92dvh, calc(100dvh - ${kbOffset}px - 80px - 16px))`,
           display: 'flex',
           flexDirection: 'column',
           transition: kbOffset > 0 ? 'bottom 0.15s ease, max-height 0.15s ease' : 'none',
