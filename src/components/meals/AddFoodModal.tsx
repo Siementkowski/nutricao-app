@@ -41,6 +41,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const qtyInputRef = useRef<HTMLInputElement>(null)
+  const addBtnRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => { if (open) fetchFoods() }, [open, fetchFoods])
 
@@ -160,7 +161,6 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
             </svg>
             <input
               ref={searchInputRef}
-              autoFocus
               type="text"
               placeholder="Buscar alimento..."
               value={query}
@@ -192,10 +192,11 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                   onClick={() => {
                     setSelected(food)
                     setQty('100')
-                    // Dismiss the keyboard so the Adicionar button is visible
                     searchInputRef.current?.blur()
-                    // Small delay so the keyboard has time to close before focusing qty
-                    setTimeout(() => qtyInputRef.current?.select(), 350)
+                    // After keyboard closes, scroll the Add button into view
+                    setTimeout(() => {
+                      addBtnRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+                    }, 380)
                   }}
                   className="w-full flex items-center justify-between px-4 py-3 text-left"
                   style={{
@@ -283,6 +284,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
 
               {/* Adicionar button — inside the card, always visible */}
               {preview && (
+                <div ref={addBtnRef}>
                 <button
                   onClick={handleAdd}
                   disabled={saving}
@@ -297,6 +299,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                 >
                   {saving ? 'Salvando...' : 'Adicionar'}
                 </button>
+                </div>
               )}
             </div>
           )}
