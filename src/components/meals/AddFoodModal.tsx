@@ -304,25 +304,26 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                 </div>
               )}
 
-              {/* Adicionar button — inside the card, always visible */}
-              {preview && (
-                <div ref={addBtnRef}>
-                <button
-                  onClick={handleAdd}
-                  disabled={saving}
-                  className="w-full py-3.5 rounded-xl text-sm"
-                  style={{
-                    backgroundColor: '#2D7D46',
-                    color: '#FFFFFF',
-                    fontWeight: 700,
-                    transition: 'opacity 0.15s',
-                    opacity: saving ? 0.7 : 1,
-                  }}
-                >
-                  {saving ? 'Salvando...' : 'Adicionar'}
-                </button>
-                </div>
-              )}
+            </div>
+          )}
+
+          {/* Botão Adicionar — fora do card, dentro da área rolável */}
+          {preview && (
+            <div ref={addBtnRef} className="mb-4">
+              <button
+                onClick={handleAdd}
+                disabled={saving}
+                className="w-full py-3.5 rounded-xl text-sm"
+                style={{
+                  backgroundColor: '#2D7D46',
+                  color: '#FFFFFF',
+                  fontWeight: 700,
+                  transition: 'opacity 0.15s',
+                  opacity: saving ? 0.7 : 1,
+                }}
+              >
+                {saving ? 'Salvando...' : 'Adicionar'}
+              </button>
             </div>
           )}
 
