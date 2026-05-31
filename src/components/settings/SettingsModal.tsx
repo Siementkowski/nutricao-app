@@ -66,7 +66,15 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
         supabase.from('food_cache').select('*').order('name'),
         supabase.from('diet_cache').select('*').order('meal_type'),
       ])
-      if (foodsRes.data) setFoods(foodsRes.data as any)
+      if (foodsRes.data) {
+        const seen = new Set<string>()
+        const unique = (foodsRes.data as any[]).filter(f => {
+          if (seen.has(f.name)) return false
+          seen.add(f.name)
+          return true
+        })
+        setFoods(unique)
+      }
       if (dietRes.data) setDietEntries(dietRes.data as any)
       setSyncState('success')
       const exMsg = result.exercises > 0 ? ` · ${result.exercises} exercícios` : ''
