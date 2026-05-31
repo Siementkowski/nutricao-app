@@ -22,7 +22,7 @@ export function MealSection({
   return (
     <div
       className="rounded-2xl overflow-hidden"
-      style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
+      style={{ backgroundColor: '#FFFFFF', border: '1px solid #EBEBEB' }}
     >
       {/* Header */}
       <button
@@ -30,13 +30,13 @@ export function MealSection({
         className="w-full flex items-center justify-between px-5 py-4"
       >
         <div className="flex items-center gap-3">
-          <span className="text-sm" style={{ color: '#2E5518', fontWeight: 500 }}>
+          <span className="text-sm" style={{ color: '#111111', fontWeight: 500 }}>
             {label}
           </span>
           {kcal > 0 && (
             <span
               className="text-xs px-2 py-0.5 rounded-full"
-              style={{ backgroundColor: '#EBF3D8', color: '#536B2F', fontWeight: 500 }}
+              style={{ backgroundColor: '#E8F5ED', color: '#2D7D46', fontWeight: 500 }}
             >
               {Math.round(kcal)} kcal
             </span>
@@ -44,7 +44,7 @@ export function MealSection({
         </div>
         <svg
           width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="#7A9460" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+          stroke="#999999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
         >
           <polyline points="6 9 12 15 18 9" />
@@ -55,7 +55,7 @@ export function MealSection({
         <div className="px-5 pb-4">
           {/* Food list */}
           {logs.length === 0 ? (
-            <p className="text-xs py-2 mb-2" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <p className="text-xs py-2 mb-2" style={{ color: '#999999', fontWeight: 300 }}>
               Nenhum alimento registrado
             </p>
           ) : (
@@ -70,14 +70,14 @@ export function MealSection({
           {logs.length > 0 && (
             <div
               className="flex gap-4 px-3 py-2 rounded-xl mt-1 mb-3"
-              style={{ backgroundColor: '#FDFDFB' }}
+              style={{ backgroundColor: '#F5F5F5' }}
             >
               {[
-                { label: 'P', value: protein, color: '#B29F76' },
-                { label: 'C', value: carbs, color: '#748A20' },
-                { label: 'G', value: fat, color: '#536B2F' },
+                { label: 'P', value: protein, color: '#2D7D46' },
+                { label: 'C', value: carbs, color: '#D4890A' },
+                { label: 'G', value: fat, color: '#2D7D46' },
               ].map(({ label: l, value, color }) => (
-                <span key={l} className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>
+                <span key={l} className="text-xs" style={{ color: '#999999', fontWeight: 300 }}>
                   {l}{' '}
                   <span style={{ color, fontWeight: 500 }}>
                     {value.toFixed(1)}g
@@ -91,11 +91,11 @@ export function MealSection({
           <button
             onClick={onAdd}
             className="flex items-center gap-2 text-xs py-2"
-            style={{ color: '#536B2F', fontWeight: 500 }}
+            style={{ color: '#2D7D46', fontWeight: 500 }}
           >
             <span
               className="w-5 h-5 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: '#EBF3D8' }}
+              style={{ backgroundColor: '#E8F5ED' }}
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="12" y1="5" x2="12" y2="19" />

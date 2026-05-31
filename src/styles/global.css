@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Forest & White palette ───────────────── */
-  --color-wellness-bg: #FDFDFB;
-  --color-wellness-surface: #FFFFFF;
-  --color-wellness-faint: #F2F6EA;
-  --color-wellness-border: #D4E0B8;
-  --color-wellness-text: #2E5518;
-  --color-wellness-muted: #7A9460;
-  --color-wellness-sage: #536B2F;
-  --color-wellness-sage-light: #EBF3D8;
-  --color-wellness-lime: #ABEB72;
-  --color-wellness-olive: #748A20;
-  --color-wellness-warm: #B29F76;
-  --color-wellness-success: #2E5518;
-  --color-wellness-danger: #C0471A;
-  --color-wellness-water: #3D8BAE;
+  --font-family-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+}
 
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-family-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+/* ── Design tokens ─────────────────────────── */
+:root {
+  --green:        #2D7D46;
+  --green-light:  #E8F5ED;
+  --green-mid:    #4CAF6E;
+  --text:         #111111;
+  --text-2:       #555555;
+  --text-3:       #999999;
+  --border:       #EBEBEB;
+  --bg:           #F5F5F5;
+  --surface:      #FFFFFF;
+  --danger:       #C4501A;
+  --warn:         #D4890A;
+  --blue:         #3B8EC4;
+  --blue-light:   #EDF4FB;
 }
 
 * {
@@ -26,38 +26,11 @@
 }
 
 html, body {
-  background-color: #FDFDFB;
-  font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
-  color: #2E5518;
+  background-color: #F5F5F5;
+  font-family: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  color: #111111;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overscroll-behavior: none;
-}
-
-/* ── Atmospheric background ──────────────────
-   Suave presença de verde floresta sobre o branco */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(55% 45% at 5%  5%,  rgba(46,85,24,0.06)  0%, transparent 55%),
-    radial-gradient(45% 40% at 95% 8%,  rgba(171,235,114,0.10) 0%, transparent 55%),
-    radial-gradient(60% 55% at 80% 98%, rgba(83,107,47,0.05) 0%, transparent 60%),
-    radial-gradient(45% 40% at 5%  92%, rgba(61,139,174,0.05) 0%, transparent 55%),
-    #FDFDFB;
-}
-
-/* Grain sutil — textura sobre o branco */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.45;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 #root {
@@ -66,23 +39,20 @@ body::after {
   flex-direction: column;
 }
 
-/* ── Typography helpers ───────────────────────── */
-.font-display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  letter-spacing: -0.01em;
-}
+/* ── Border-radius overrides ─────────────────
+   Cards: 22px | Botões/inputs: 14px            */
+.rounded-2xl { border-radius: 22px !important; }
+.rounded-xl  { border-radius: 14px !important; }
 
-/* Sombra botanical leve em tema light */
+/* Cards com borda sutil, sem sombra pesada */
 main [class~="rounded-2xl"] {
-  box-shadow:
-    0 1px 2px rgba(46,85,24,0.06),
-    0 8px 24px rgba(46,85,24,0.08);
+  border: 1px solid #EBEBEB;
+  box-shadow: none;
 }
 
-/* ── Animations ──────────────────────────── */
+/* ── Animations ────────────────────────────── */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -102,11 +72,11 @@ main [class~="rounded-2xl"] {
 }
 
 .page-enter {
-  animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .food-card-enter {
-  animation: fadeIn 0.25s ease both;
+  animation: fadeIn 0.2s ease both;
 }
 
 .animate-spin {

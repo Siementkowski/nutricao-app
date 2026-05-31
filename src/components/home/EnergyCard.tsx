@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { loadEnergy, calcTDEEBase } from '../../lib/energy'
 
 interface EnergyCardProps {
@@ -19,50 +19,75 @@ export function EnergyCard({ consumed, workoutKcal }: EnergyCardProps) {
   const totalSpent = tdeeBase + workoutKcal
   const deficit = totalSpent - consumed
   const isDeficit = deficit > 0
-  const label = isDeficit ? 'Déficit' : 'Superávit'
-  const color = isDeficit ? '#536B2F' : '#C0471A'
-  const bgColor = isDeficit ? '#EBF3D8' : '#FBF0EB'
-  const borderColor = isDeficit ? '#C4D9A0' : '#E8C8B0'
+  const label = isDeficit ? 'DÉFICIT CALÓRICO' : 'SUPERÁVIT CALÓRICO'
+  const numColor = isDeficit ? '#111111' : '#C4501A'
+  const accentColor = isDeficit ? '#2D7D46' : '#C4501A'
+  const badgeText = isDeficit ? '✓ No caminho certo' : '⚠ Acima da meta'
 
   return (
     <div
       className="rounded-2xl px-5 py-4"
-      style={{ backgroundColor: bgColor, border: `1px solid ${borderColor}` }}
+      style={{ backgroundColor: '#E8F5ED', border: '1.5px solid rgba(45,125,70,0.25)' }}
     >
-      {/* Big number */}
-      <div className="flex items-baseline gap-2 mb-3">
-        <p className="font-display" style={{ color, fontWeight: 600, lineHeight: 1, fontSize: '2.1rem', letterSpacing: '-0.02em' }}>
-          {Math.abs(Math.round(deficit))}
-        </p>
-        <p className="text-sm" style={{ color, fontWeight: 400 }}>kcal</p>
-        <p className="text-xs uppercase tracking-wider ml-1" style={{ color, fontWeight: 300 }}>
-          {label}
-        </p>
+      {/* Label */}
+      <p style={{ color: accentColor, fontSize: 10, fontWeight: 700, letterSpacing: '1.2px', textTransform: 'uppercase', marginBottom: 6 }}>
+        {label}
+      </p>
+
+      {/* Number + breakdown row */}
+      <div className="flex items-start justify-between">
+        {/* Big number */}
+        <div>
+          <p style={{ color: numColor, fontSize: 32, fontWeight: 800, lineHeight: 1, letterSpacing: '-1px' }}>
+            {Math.abs(Math.round(deficit))}
+          </p>
+          <p style={{ color: '#999999', fontSize: 11, fontWeight: 400, marginTop: 2 }}>kcal</p>
+        </div>
+
+        {/* Stats */}
+        <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className="flex justify-between gap-4">
+            <span style={{ color: '#999999', fontSize: 11, fontWeight: 400 }}>TDEE base</span>
+            <span style={{ color: '#111111', fontSize: 13, fontWeight: 700 }}>{tdeeBase} kcal</span>
+          </div>
+          <div className="flex justify-between gap-4">
+            <span style={{ color: '#999999', fontSize: 11, fontWeight: 400 }}>Treino hoje</span>
+            <span style={{ color: workoutKcal > 0 ? accentColor : '#999999', fontSize: 13, fontWeight: 700 }}>
+              {workoutKcal > 0 ? `+${workoutKcal}` : '0'} kcal
+            </span>
+          </div>
+          <div style={{ borderTop: '1px solid rgba(45,125,70,0.15)', paddingTop: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <div className="flex justify-between gap-4">
+              <span style={{ color: '#999999', fontSize: 11, fontWeight: 400 }}>Total gasto</span>
+              <span style={{ color: '#111111', fontSize: 13, fontWeight: 700 }}>{totalSpent} kcal</span>
+            </div>
+            <div className="flex justify-between gap-4">
+              <span style={{ color: '#999999', fontSize: 11, fontWeight: 400 }}>Consumido</span>
+              <span style={{ color: '#111111', fontSize: 13, fontWeight: 700 }}>{Math.round(consumed)} kcal</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Breakdown */}
-      <div className="space-y-1.5" style={{ borderTop: `1px solid ${borderColor}`, paddingTop: 10 }}>
-        <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>TDEE base</span>
-          <span className="text-xs" style={{ color: '#2E5518', fontWeight: 400 }}>{tdeeBase} kcal</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>Treino hoje</span>
-          <span className="text-xs" style={{ color: workoutKcal > 0 ? color : '#7A9460', fontWeight: workoutKcal > 0 ? 500 : 300 }}>
-            {workoutKcal > 0 ? `+${workoutKcal}` : '0'} kcal
-          </span>
-        </div>
-        <div
-          className="flex justify-between pt-1.5"
-          style={{ borderTop: `1px solid ${borderColor}` }}
-        >
-          <span className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>Total gasto</span>
-          <span className="text-xs" style={{ color: '#2E5518', fontWeight: 600 }}>{totalSpent} kcal</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>Consumido</span>
-          <span className="text-xs" style={{ color: '#2E5518', fontWeight: 400 }}>{Math.round(consumed)} kcal</span>
-        </div>
+      {/* Badge */}
+      <div style={{ marginTop: 12 }}>
+        <span style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 4,
+          backgroundColor: '#FFFFFF',
+          border: `1px solid ${accentColor}`,
+          borderRadius: 20,
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingTop: 4,
+          paddingBottom: 4,
+          fontSize: 12,
+          fontWeight: 700,
+          color: accentColor,
+        }}>
+          {badgeText}
+        </span>
       </div>
     </div>
   )

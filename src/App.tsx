@@ -9,7 +9,7 @@ import { Progress } from './pages/Progress'
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-dvh" style={{ backgroundColor: 'transparent' }}>
+      <div className="min-h-dvh" style={{ backgroundColor: '#F5F5F5' }}>
         <main className="max-w-lg mx-auto">
           <Routes>
             <Route path="/" element={<Home />} />

@@ -28,7 +28,7 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
     <>
       <div
         className="fixed inset-0 z-40"
-        style={{ backgroundColor: 'rgba(46,85,24,0.45)' }}
+        style={{ backgroundColor: 'rgba(0,0,0,0.35)' }}
         onClick={onClose}
       />
       <div
@@ -36,14 +36,14 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
         style={{ backgroundColor: '#FFFFFF', animation: 'slideUp 0.25s ease' }}
       >
         <div className="flex justify-center pt-3 pb-1">
-          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#D4E0B8' }} />
+          <div className="w-10 h-1 rounded-full" style={{ backgroundColor: '#EBEBEB' }} />
         </div>
 
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid #D4E0B8' }}>
-          <h2 className="text-base" style={{ color: '#2E5518', fontWeight: 500 }}>
+        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid #EBEBEB' }}>
+          <h2 className="text-base" style={{ color: '#111111', fontWeight: 500 }}>
             Registrar peso
           </h2>
-          <button onClick={onClose} style={{ color: '#7A9460' }}>
+          <button onClick={onClose} style={{ color: '#999999' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -53,7 +53,7 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
         <div className="px-5 py-5 space-y-4">
           {/* Weight */}
           <div>
-            <label className="text-xs block mb-1.5" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <label className="text-xs block mb-1.5" style={{ color: '#999999', fontWeight: 300 }}>
               Peso (kg) *
             </label>
             <input
@@ -67,9 +67,9 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
               onChange={e => setWeight(e.target.value)}
               className="w-full rounded-xl px-4 py-3 text-lg outline-none"
               style={{
-                backgroundColor: '#FDFDFB',
-                border: '1px solid #D4E0B8',
-                color: '#2E5518',
+                backgroundColor: '#F5F5F5',
+                border: '1px solid #EBEBEB',
+                color: '#111111',
                 fontWeight: 500,
               }}
             />
@@ -77,7 +77,7 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
 
           {/* Body fat */}
           <div>
-            <label className="text-xs block mb-1.5" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <label className="text-xs block mb-1.5" style={{ color: '#999999', fontWeight: 300 }}>
               % Gordura corporal (opcional)
             </label>
             <input
@@ -89,13 +89,13 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
               value={fat}
               onChange={e => setFat(e.target.value)}
               className="w-full rounded-xl px-4 py-3 text-sm outline-none"
-              style={{ backgroundColor: '#FDFDFB', border: '1px solid #D4E0B8', color: '#2E5518' }}
+              style={{ backgroundColor: '#F5F5F5', border: '1px solid #EBEBEB', color: '#111111' }}
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="text-xs block mb-1.5" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <label className="text-xs block mb-1.5" style={{ color: '#999999', fontWeight: 300 }}>
               Nota (opcional)
             </label>
             <input
@@ -104,7 +104,7 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
               value={notes}
               onChange={e => setNotes(e.target.value)}
               className="w-full rounded-xl px-4 py-3 text-sm outline-none"
-              style={{ backgroundColor: '#FDFDFB', border: '1px solid #D4E0B8', color: '#2E5518' }}
+              style={{ backgroundColor: '#F5F5F5', border: '1px solid #EBEBEB', color: '#111111' }}
             />
           </div>
 
@@ -113,8 +113,8 @@ export function LogWeightModal({ open, onClose, onSave }: LogWeightModalProps) {
             disabled={!weight || saving}
             className="w-full py-4 rounded-2xl text-sm mb-4"
             style={{
-              backgroundColor: weight ? '#536B2F' : '#D4E0B8',
-              color: weight ? '#FFFFFF' : '#7A9460',
+              backgroundColor: weight ? '#2D7D46' : '#EBEBEB',
+              color: weight ? '#FFFFFF' : '#999999',
               fontWeight: 500,
               transition: 'all 0.15s',
             }}

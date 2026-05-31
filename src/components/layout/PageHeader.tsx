@@ -1,29 +1,34 @@
-﻿interface PageHeaderProps {
+interface PageHeaderProps {
   title: string
   subtitle?: string
   action?: React.ReactNode
+  avatar?: string  // initials, e.g. "N"
 }
 
-export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, action, avatar }: PageHeaderProps) {
   return (
-    <div className="flex items-end justify-between px-5 pt-11 pb-5">
-      <div>
-        {subtitle && (
-          <p
-            className="text-xs uppercase tracking-[0.18em] mb-1"
-            style={{ color: '#7A9460', fontWeight: 500 }}
+    <div className="flex items-center justify-between px-4 pt-10 pb-4">
+      <div className="flex items-center gap-3 min-w-0">
+        {avatar && (
+          <div
+            className="shrink-0 flex items-center justify-center rounded-full"
+            style={{ width: 38, height: 38, backgroundColor: '#2D7D46' }}
           >
-            {subtitle}
-          </p>
+            <span style={{ color: '#FFFFFF', fontSize: 15, fontWeight: 700 }}>{avatar}</span>
+          </div>
         )}
-        <h1
-          className="font-display leading-[1.05]"
-          style={{ color: '#2E5518', fontWeight: 500, fontSize: '1.9rem' }}
-        >
-          {title}
-        </h1>
+        <div className="min-w-0">
+          {subtitle && (
+            <p style={{ color: '#999999', fontSize: 13, fontWeight: 400, marginBottom: 1 }}>
+              {subtitle}
+            </p>
+          )}
+          <h1 style={{ color: '#111111', fontSize: 24, fontWeight: 800, lineHeight: 1.1 }}>
+            {title}
+          </h1>
+        </div>
       </div>
-      {action && <div className="pb-1">{action}</div>}
+      {action && <div className="shrink-0 ml-3">{action}</div>}
     </div>
   )
 }

@@ -10,10 +10,10 @@ import { useProgress } from '../hooks/useProgress'
 import { useUserStore } from '../store/userStore'
 
 const STATUS_COLOR: Record<string, string> = {
-  on: '#536B2F',
-  near: '#ABEB72',
-  over: '#C0471A',
-  none: '#D4E0B8',
+  on: '#2D7D46',
+  near: '#4CAF6E',
+  over: '#C4501A',
+  none: '#EBEBEB',
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -39,10 +39,10 @@ function CustomTooltip({ active, payload, label }: TooltipProps) {
   return (
     <div
       className="rounded-xl px-3 py-2"
-      style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+      style={{ backgroundColor: '#FFFFFF', border: '1px solid #EBEBEB', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
     >
-      <p className="text-xs mb-0.5" style={{ color: '#7A9460', fontWeight: 300 }}>{label}</p>
-      <p className="text-sm" style={{ color: '#2E5518', fontWeight: 600 }}>{payload[0].value} kg</p>
+      <p className="text-xs mb-0.5" style={{ color: '#999999', fontWeight: 300 }}>{label}</p>
+      <p className="text-sm" style={{ color: '#111111', fontWeight: 600 }}>{payload[0].value} kg</p>
     </div>
   )
 }
@@ -95,7 +95,7 @@ export function Progress() {
             <button
               onClick={() => setModalOpen(true)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs"
-              style={{ backgroundColor: '#EBF3D8', color: '#536B2F', fontWeight: 500 }}
+              style={{ backgroundColor: '#E8F5ED', color: '#2D7D46', fontWeight: 500 }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
@@ -110,18 +110,18 @@ export function Progress() {
           {/* ── Peso ── */}
           <div
             className="rounded-2xl p-5"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EBEBEB' }}
           >
-            <p className="text-xs uppercase tracking-wider mb-4" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-4" style={{ color: '#999999', fontWeight: 300 }}>
               Peso corporal — últimos 30 dias
             </p>
 
             {weightLogs.length < 2 ? (
               <div
                 className="rounded-xl p-6 flex flex-col items-center"
-                style={{ backgroundColor: '#FDFDFB' }}
+                style={{ backgroundColor: '#F5F5F5' }}
               >
-                <p className="text-xs text-center" style={{ color: '#7A9460', fontWeight: 300 }}>
+                <p className="text-xs text-center" style={{ color: '#999999', fontWeight: 300 }}>
                   {weightLogs.length === 0
                     ? 'Nenhum peso registrado. Toque em "+ Peso" para começar.'
                     : 'Registre mais 1 peso para ver o gráfico.'}
@@ -130,16 +130,16 @@ export function Progress() {
             ) : (
               <ResponsiveContainer width="100%" height={180}>
                 <LineChart data={chartData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#D4E0B8" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#EBEBEB" vertical={false} />
                   <XAxis
                     dataKey="date"
-                    tick={{ fontSize: 10, fill: '#7A9460' }}
+                    tick={{ fontSize: 10, fill: '#999999' }}
                     tickLine={false}
                     axisLine={false}
                     interval="preserveStartEnd"
                   />
                   <YAxis
-                    tick={{ fontSize: 10, fill: '#7A9460' }}
+                    tick={{ fontSize: 10, fill: '#999999' }}
                     tickLine={false}
                     axisLine={false}
                     domain={['auto', 'auto']}
@@ -148,10 +148,10 @@ export function Progress() {
                   <Line
                     type="monotone"
                     dataKey="peso"
-                    stroke="#536B2F"
+                    stroke="#2D7D46"
                     strokeWidth={2}
                     dot={false}
-                    activeDot={{ r: 4, fill: '#536B2F', strokeWidth: 0 }}
+                    activeDot={{ r: 4, fill: '#2D7D46', strokeWidth: 0 }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -169,10 +169,10 @@ export function Progress() {
                   <div
                     key={label}
                     className="rounded-xl p-2.5 text-center"
-                    style={{ backgroundColor: '#FDFDFB' }}
+                    style={{ backgroundColor: '#F5F5F5' }}
                   >
-                    <p className="text-xs mb-1" style={{ color: '#7A9460', fontWeight: 300 }}>{label}</p>
-                    <p className="text-sm" style={{ color: '#2E5518', fontWeight: 600 }}>{value}</p>
+                    <p className="text-xs mb-1" style={{ color: '#999999', fontWeight: 300 }}>{label}</p>
+                    <p className="text-sm" style={{ color: '#111111', fontWeight: 600 }}>{value}</p>
                   </div>
                 ))}
               </div>
@@ -182,9 +182,9 @@ export function Progress() {
           {/* ── Aderência ── */}
           <div
             className="rounded-2xl p-5"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #D4E0B8' }}
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #EBEBEB' }}
           >
-            <p className="text-xs uppercase tracking-wider mb-4" style={{ color: '#7A9460', fontWeight: 300 }}>
+            <p className="text-xs uppercase tracking-wider mb-4" style={{ color: '#999999', fontWeight: 300 }}>
               Aderência alimentar — 60 dias
             </p>
 
@@ -215,7 +215,7 @@ export function Progress() {
                     className="w-2.5 h-2.5 rounded-sm"
                     style={{ backgroundColor: STATUS_COLOR[key] }}
                   />
-                  <span className="text-xs" style={{ color: '#7A9460', fontWeight: 300 }}>{label}</span>
+                  <span className="text-xs" style={{ color: '#999999', fontWeight: 300 }}>{label}</span>
                 </div>
               ))}
             </div>
@@ -230,12 +230,12 @@ export function Progress() {
                 <div
                   key={label}
                   className="rounded-xl p-3 text-center"
-                  style={{ backgroundColor: '#EBF3D8' }}
+                  style={{ backgroundColor: '#E8F5ED' }}
                 >
-                  <p className="text-xs mb-1" style={{ color: '#7A9460', fontWeight: 300 }}>{label}</p>
-                  <p className="text-lg" style={{ color: '#536B2F', fontWeight: 600 }}>
+                  <p className="text-xs mb-1" style={{ color: '#999999', fontWeight: 300 }}>{label}</p>
+                  <p className="text-lg" style={{ color: '#2D7D46', fontWeight: 600 }}>
                     {value}
-                    <span className="text-xs ml-0.5" style={{ fontWeight: 300, color: '#7A9460' }}>{unit}</span>
+                    <span className="text-xs ml-0.5" style={{ fontWeight: 300, color: '#999999' }}>{unit}</span>
                   </p>
                 </div>
               ))}
