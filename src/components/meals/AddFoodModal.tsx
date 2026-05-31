@@ -38,10 +38,30 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const [qty, setQty] = useState('')
   const [meal, setMeal] = useState<MealType>(defaultMeal)
   const [saving, setSaving] = useState(false)
+  const [kbOffset, setKbOffset] = useState(0)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const qtyInputRef = useRef<HTMLInputElement>(null)
   const addBtnRef = useRef<HTMLDivElement>(null)
+
+  // Track keyboard height via visualViewport
+  useEffect(() => {
+    if (!open) { setKbOffset(0); return }
+    const vv = window.visualViewport
+    if (!vv) return
+    const update = () => {
+      const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
+      setKbOffset(kb)
+    }
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    update()
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      setKbOffset(0)
+    }
+  }, [open])
 
   useEffect(() => { if (open) fetchFoods() }, [open, fetchFoods])
 
@@ -99,15 +119,17 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
         onClick={onClose}
       />
 
-      {/* Sheet */}
+      {/* Sheet — sobe junto com o teclado via visualViewport */}
       <div
-        className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl"
+        className="fixed left-0 right-0 z-50 rounded-t-3xl"
         style={{
+          bottom: kbOffset,
           backgroundColor: '#FFFFFF',
-          maxHeight: '92dvh',
+          maxHeight: `min(92dvh, calc(100dvh - ${kbOffset}px - 16px))`,
           display: 'flex',
           flexDirection: 'column',
-          animation: 'slideUp 0.25s ease',
+          transition: kbOffset > 0 ? 'bottom 0.15s ease, max-height 0.15s ease' : 'none',
+          animation: kbOffset === 0 ? 'slideUp 0.25s ease' : 'none',
         }}
       >
         {/* Handle */}
