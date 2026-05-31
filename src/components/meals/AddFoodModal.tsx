@@ -42,7 +42,6 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
   const qtyInputRef = useRef<HTMLInputElement>(null)
-  const addBtnRef = useRef<HTMLDivElement>(null)
 
   // Track keyboard height via visualViewport
   useEffect(() => {
@@ -313,7 +312,6 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
         {preview && (
           <div className="shrink-0 px-5 pt-3 pb-4">
             <button
-              ref={addBtnRef}
               onClick={handleAdd}
               disabled={saving}
               className="w-full py-3.5 rounded-xl text-sm"
