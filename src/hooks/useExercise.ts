@@ -31,14 +31,22 @@ export function useExercise() {
   const addExerciseLog = useCallback(async (
     entry: Omit<ExerciseLog, 'id' | 'created_at'>
   ): Promise<ExerciseLog | null> => {
+    // Optimistic: atualiza total imediatamente
+    const tempId = `temp-${Date.now()}`
+    const tempLog: ExerciseLog = { id: tempId, created_at: new Date().toISOString(), ...entry }
+    setTodayLogs(prev => [tempLog, ...prev])
     const { data, error } = await supabase
       .from('exercise_log')
       .insert(entry)
       .select()
       .single()
-    if (error) { console.warn('addExerciseLog:', error.message); return null }
+    if (error) {
+      setTodayLogs(prev => prev.filter(l => l.id !== tempId)) // rollback
+      console.warn('addExerciseLog:', error.message)
+      return null
+    }
     const log = data as ExerciseLog
-    setTodayLogs(prev => [log, ...prev])
+    setTodayLogs(prev => prev.map(l => l.id === tempId ? log : l)) // troca temp pelo real
     return log
   }, [])
 

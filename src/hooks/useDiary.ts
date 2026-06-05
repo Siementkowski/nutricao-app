@@ -4,7 +4,7 @@ import { useDiaryStore } from '../store/diaryStore'
 import type { FoodLog } from '../types'
 
 export function useDiary() {
-  const { todayLogs, waterToday, setTodayLogs, setWaterToday, addLog, removeLog } = useDiaryStore()
+  const { todayLogs, waterToday, setTodayLogs, setWaterToday, addLog, removeLog, replaceLog } = useDiaryStore()
 
   const fetchTodayLogs = useCallback(async () => {
     const today = new Date().toISOString().split('T')[0]
@@ -17,14 +17,22 @@ export function useDiary() {
   }, [setTodayLogs])
 
   const addFoodLog = useCallback(async (entry: Omit<FoodLog, 'id' | 'created_at'>) => {
+    // Optimistic: adiciona imediatamente com ID temporário
+    const tempId = `temp-${Date.now()}`
+    const tempLog: FoodLog = { id: tempId, created_at: new Date().toISOString(), ...entry }
+    addLog(tempLog)
     const { data, error } = await supabase.from('food_log').insert(entry).select().single()
-    if (!error && data) addLog(data as FoodLog)
+    if (!error && data) {
+      replaceLog(tempId, data as FoodLog)
+    } else {
+      removeLog(tempId) // rollback
+    }
     return { error }
-  }, [addLog])
+  }, [addLog, removeLog, replaceLog])
 
   const removeFoodLog = useCallback(async (id: string) => {
-    const { error } = await supabase.from('food_log').delete().eq('id', id)
-    if (!error) removeLog(id)
+    removeLog(id) // optimistic: remove imediatamente
+    supabase.from('food_log').delete().eq('id', id) // salva em background
   }, [removeLog])
 
   const fetchTodayWater = useCallback(async () => {

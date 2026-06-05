@@ -137,17 +137,15 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
 
   const handleAdd = useCallback(async () => {
     if (!selected || !qty || +qty <= 0 || !preview) return
-    setSaving(true)
+    onClose() // fecha imediatamente — optimistic update cuida do resto
     const today = new Date().toISOString().split('T')[0]
-    await addFoodLog({
+    addFoodLog({
       date: today,
       meal_type: meal,
       food_name: selected.name,
       quantity_g: +qty,
       ...preview,
     })
-    setSaving(false)
-    onClose()
   }, [selected, qty, meal, preview, addFoodLog, onClose])
 
   if (!open) return null
