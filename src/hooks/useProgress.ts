@@ -39,27 +39,33 @@ export function useProgress() {
     from.setDate(from.getDate() - (days - 1))
     const fromStr = from.toLocaleDateString('en-CA')
 
-    const { data } = await supabase
-      .from('food_log')
-      .select('date, kcal')
-      .gte('date', fromStr)
+    const [foodRes, exerciseRes] = await Promise.all([
+      supabase.from('food_log').select('date, kcal').gte('date', fromStr),
+      supabase.from('exercise_log').select('date, kcal_burned').gte('date', fromStr),
+    ])
 
-    // Aggregate kcal per date
-    const byDate = new Map<string, number>()
-    for (const row of data || []) {
-      byDate.set(row.date, (byDate.get(row.date) ?? 0) + row.kcal)
+    // Aggregate kcal consumidas por dia
+    const consumed = new Map<string, number>()
+    for (const row of foodRes.data || []) {
+      consumed.set(row.date, (consumed.get(row.date) ?? 0) + row.kcal)
     }
 
-    // Build 60-day array oldest → newest
+    // Aggregate kcal gastas por dia
+    const burned = new Map<string, number>()
+    for (const row of exerciseRes.data || []) {
+      burned.set(row.date, (burned.get(row.date) ?? 0) + row.kcal_burned)
+    }
+
+    // Build 60-day array oldest → newest (kcal líquidas = consumidas - gastas)
     const result: DayAdherence[] = []
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date()
       d.setDate(d.getDate() - i)
       const dateStr = d.toLocaleDateString('en-CA')
-      const kcal = byDate.get(dateStr) ?? 0
+      const kcal = Math.max(0, (consumed.get(dateStr) ?? 0) - (burned.get(dateStr) ?? 0))
 
       let status: DayAdherence['status'] = 'none'
-      if (kcal > 0) {
+      if ((consumed.get(dateStr) ?? 0) > 0) {
         const diff = kcal - kcalGoal
         if (Math.abs(diff) <= 100) status = 'on'
         else if (Math.abs(diff) <= 200) status = 'near'
