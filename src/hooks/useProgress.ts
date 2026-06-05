@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
-import { localDateStr } from '../lib/dateUtils'
+
 import type { WeightLog } from '../types'
 
 export interface DayAdherence {
