@@ -64,13 +64,14 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
 
   useEffect(() => { if (open) fetchFoods() }, [open, fetchFoods])
 
+  // Ao abrir: sincroniza refeição e reseta estado — corrige bug de refeição errada
   useEffect(() => {
-    if (!open) {
+    if (open) {
+      setMeal(defaultMeal)
       setQuery('')
       setResults([])
       setSelected(null)
       setQty('')
-      setMeal(defaultMeal)
     }
   }, [open, defaultMeal])
 
@@ -78,17 +79,22 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
     if (debounceRef.current) clearTimeout(debounceRef.current)
     if (!query.trim()) { setResults([]); return }
     debounceRef.current = setTimeout(() => {
+      // Busca em todos os alimentos, independente da categoria
       setResults(searchFoods(query).slice(0, 8))
     }, 300)
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
   }, [query, searchFoods])
 
-  // Fallback: show all foods when no query and foods loaded
+  // Default: mostra alimentos da refeição atual em ordem alfabética
   useEffect(() => {
     if (!query.trim() && foods.length > 0 && !selected) {
-      setResults(foods.slice(0, 8))
+      const byMeal = foods
+        .filter(f => f.category === meal)
+        .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+      // Se não houver alimentos na categoria, mostra todos
+      setResults(byMeal.length > 0 ? byMeal.slice(0, 8) : foods.slice(0, 8))
     }
-  }, [foods, query, selected])
+  }, [foods, query, selected, meal])
 
   const preview = selected && qty && +qty > 0 ? calcMacros(selected, +qty) : null
 

@@ -66,7 +66,7 @@ export async function fetchFoodsFromSheets(sheetId: string): Promise<Omit<Food, 
   // Skip header row (index 0)
   return rows.slice(1).map(r => ({
     name: r[0] || '',
-    category: r[1] || '',
+    category: mapMeal(r[1] || ''),   // mapeia "café da manhã" → "breakfast" etc.
     kcal_per_100g: num(r[2]),
     protein_per_100g: num(r[3]),
     carbs_per_100g: num(r[4]),
