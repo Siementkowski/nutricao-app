@@ -63,15 +63,20 @@ export async function fetchFoodsFromSheets(sheetId: string): Promise<Omit<Food, 
   const rows = parseCSV(text)
   if (rows.length < 2) return []
 
-  // Skip header row (index 0)
-  return rows.slice(1).map(r => ({
-    name: r[0] || '',
-    category: mapMeal(r[1] || ''),   // mapeia "café da manhã" → "breakfast" etc.
-    kcal_per_100g: num(r[2]),
-    protein_per_100g: num(r[3]),
-    carbs_per_100g: num(r[4]),
-    fat_per_100g: num(r[5]),
-  })).filter(f => f.name.length > 0)
+  // Skip header row (index 0) — categoria pode ter múltiplos valores separados por vírgula
+  return rows.slice(1).flatMap(r => {
+    const name = r[0] || ''
+    if (!name) return []
+    const base = {
+      kcal_per_100g: num(r[2]),
+      protein_per_100g: num(r[3]),
+      carbs_per_100g: num(r[4]),
+      fat_per_100g: num(r[5]),
+    }
+    const categories = (r[1] || '').split(',').map(c => mapMeal(c.trim())).filter(Boolean)
+    if (categories.length === 0) return [{ name, category: '', ...base }]
+    return categories.map(category => ({ name, category, ...base }))
+  })
 }
 
 export async function fetchDietFromSheets(sheetId: string): Promise<Omit<DietEntry, 'id'>[]> {

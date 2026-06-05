@@ -10,10 +10,12 @@ export function useFoods() {
     if (foods.length > 0) return
     const { data, error } = await supabase.from('food_cache').select('*').order('name')
     if (!error && data) {
+      // Deduplica por name+category (mesmo alimento pode ter múltiplas categorias)
       const seen = new Set<string>()
       const unique = (data as Food[]).filter(f => {
-        if (seen.has(f.name)) return false
-        seen.add(f.name)
+        const key = `${f.name}|${f.category}`
+        if (seen.has(key)) return false
+        seen.add(key)
         return true
       })
       setFoods(unique)
