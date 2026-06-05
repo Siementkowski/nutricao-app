@@ -108,6 +108,11 @@ export function Home() {
   async function handleStrengthAdd(minutes: number) {
     const strengthEx = exerciseCache.find(e => e.categoria === 'treino')
     if (!strengthEx) return
+    // Impede total ficar negativo
+    if (minutes < 0) {
+      const current = getTotalByType('strength').minutes
+      if (current + minutes < 0) return
+    }
     const weight = loadEnergy().weight || 70
     const kcal = Math.round(strengthEx.kcal_por_kg_por_minuto * weight * minutes)
     const today = new Date().toISOString().split('T')[0]
@@ -117,7 +122,8 @@ export function Home() {
       intensity: strengthEx.intensidade,
       duration_min: minutes, kcal_burned: kcal,
     })
-    showToast(`${minutes} min registrados — ${kcal} kcal`, 'strength')
+    const label = minutes > 0 ? `+${minutes} min — ${kcal} kcal` : `${minutes} min — ${kcal} kcal`
+    showToast(label, 'strength')
   }
 
   async function handleCardioRegister() {
@@ -285,7 +291,7 @@ export function Home() {
                   <p className="text-xs mb-2" style={{ color: '#999999', fontWeight: 300 }}>
                     Registrar tempo
                   </p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mb-2">
                     {[1, 5, 10, 30, 60].map(min => (
                       <button
                         key={min}
@@ -299,6 +305,23 @@ export function Home() {
                         }}
                       >
                         +{min}m
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    {[1, 5, 10, 30, 60].map(min => (
+                      <button
+                        key={min}
+                        onClick={() => handleStrengthAdd(-min)}
+                        className="flex-1 py-2.5 rounded-xl text-xs"
+                        style={{
+                          backgroundColor: '#FBF0EB',
+                          color: '#C4501A',
+                          fontWeight: 500,
+                          border: '1px solid #EBEBEB',
+                        }}
+                      >
+                        -{min}m
                       </button>
                     ))}
                   </div>
