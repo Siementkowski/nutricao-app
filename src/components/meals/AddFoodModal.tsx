@@ -69,7 +69,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const [selected, setSelected] = useState<Food | null>(null)
   const [qty, setQty] = useState('')
   const [meal, setMeal] = useState<MealType>(defaultMeal)
-
+  const [saving, setSaving] = useState(false)
   const [kbOffset, setKbOffset] = useState(0)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
