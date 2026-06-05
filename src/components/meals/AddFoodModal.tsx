@@ -18,6 +18,37 @@ const MEAL_LABELS: Record<MealType, string> = {
   snack: 'Lanche',
 }
 
+// Mapeamento português → chave interna (suporta dados antigos e novos do DB)
+const PT_TO_KEY: Record<string, MealType> = {
+  'cafe': 'breakfast', 'cafe da manha': 'breakfast', 'manha': 'breakfast',
+  'almoco': 'lunch',
+  'jantar': 'dinner',
+  'lanche': 'snack',
+}
+function normalize(s: string) {
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim()
+}
+function categoryToKeys(category: string): MealType[] {
+  if (!category) return []
+  const n = normalize(category)
+  if (n === 'todos' || n === 'all') return ['breakfast', 'lunch', 'snack', 'dinner']
+  // Já é uma chave interna (pós-sync)
+  if (['breakfast', 'lunch', 'snack', 'dinner'].includes(n)) return [n as MealType]
+  // Pode ser comma-separated em português (dados antigos)
+  return category.split(',').flatMap(part => {
+    const pn = normalize(part)
+    for (const [k, v] of Object.entries(PT_TO_KEY)) {
+      if (pn.includes(k)) return [v]
+    }
+    return []
+  })
+}
+function displayCategory(category: string): string {
+  const keys = categoryToKeys(category)
+  if (keys.length === 0) return category
+  return keys.map(k => MEAL_LABELS[k]).join(', ')
+}
+
 function calcMacros(food: Food, qty: number) {
   const f = (v: number) => +((v * qty) / 100).toFixed(1)
   return {
@@ -89,10 +120,16 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   useEffect(() => {
     if (!query.trim() && foods.length > 0 && !selected) {
       const byMeal = foods
-        .filter(f => f.category === meal)
+        .filter(f => categoryToKeys(f.category).includes(meal))
         .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
-      // Se não houver alimentos na categoria, mostra todos
-      setResults(byMeal.length > 0 ? byMeal.slice(0, 8) : foods.slice(0, 8))
+      // Remove entradas duplicadas de nome (mesmo alimento pode ter várias entradas)
+      const seen = new Set<string>()
+      const unique = byMeal.filter(f => {
+        if (seen.has(f.name)) return false
+        seen.add(f.name)
+        return true
+      })
+      setResults(unique.length > 0 ? unique.slice(0, 8) : foods.slice(0, 8))
     }
   }, [foods, query, selected, meal])
 
@@ -232,7 +269,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
                       {food.name}
                     </p>
                     <p className="text-xs mt-0.5" style={{ color: '#999999', fontWeight: 300 }}>
-                      {food.kcal_per_100g} kcal · {food.category}
+                      {food.kcal_per_100g} kcal · {displayCategory(food.category)}
                     </p>
                   </div>
                   <span className="text-xs" style={{ color: '#2D7D46', fontWeight: 500 }}>
