@@ -58,6 +58,7 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
     if (!id) { setSyncState('error'); setSyncMsg('Cole o ID da planilha primeiro.'); return }
     setSyncState('loading')
     setSyncMsg('')
+    setFoods([]) // limpa cache para forçar reload após sync
     try {
       const result = await syncFromSheets(id)
       localStorage.setItem(LS_KEY, id)
@@ -67,10 +68,12 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
         supabase.from('diet_cache').select('*').order('meal_type'),
       ])
       if (foodsRes.data) {
+        // Deduplica por name+category (mesmo alimento pode ter múltiplas categorias)
         const seen = new Set<string>()
         const unique = (foodsRes.data as any[]).filter(f => {
-          if (seen.has(f.name)) return false
-          seen.add(f.name)
+          const key = `${f.name}|${f.category}`
+          if (seen.has(key)) return false
+          seen.add(key)
           return true
         })
         setFoods(unique)
