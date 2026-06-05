@@ -73,6 +73,11 @@ export async function fetchFoodsFromSheets(sheetId: string): Promise<Omit<Food, 
       carbs_per_100g: num(r[4]),
       fat_per_100g: num(r[5]),
     }
+    const ALL_MEALS = ['breakfast', 'lunch', 'snack', 'dinner']
+    const raw = (r[1] || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    if (raw === 'todos' || raw === 'all') {
+      return ALL_MEALS.map(category => ({ name, category, ...base }))
+    }
     const categories = (r[1] || '').split(',').map(c => mapMeal(c.trim())).filter(Boolean)
     if (categories.length === 0) return [{ name, category: '', ...base }]
     return categories.map(category => ({ name, category, ...base }))
