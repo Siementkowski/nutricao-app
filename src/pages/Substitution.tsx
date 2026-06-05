@@ -4,6 +4,7 @@ import { PageTransition } from '../components/layout/PageTransition'
 import { useSubstitution, type EquivType, type SubResult } from '../hooks/useSubstitution'
 import { useFoods } from '../hooks/useFoods'
 import { useDiary } from '../hooks/useDiary'
+import { localDateStr } from '../lib/dateUtils'
 import type { Food, FoodLog } from '../types'
 
 type MealType = FoodLog['meal_type']
@@ -157,7 +158,7 @@ export function Substitution() {
   async function handleRegister() {
     if (!subFood || !result || result.qty <= 0) return
     setRegistering(true)
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     await addFoodLog({
       date: today,
       meal_type: selectedMeal,

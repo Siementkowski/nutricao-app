@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { supabase } from '../lib/supabase'
+import { localDateStr } from '../lib/dateUtils'
 import { useDiaryStore } from '../store/diaryStore'
 import type { FoodLog } from '../types'
 
@@ -7,7 +8,7 @@ export function useDiary() {
   const { todayLogs, waterToday, setTodayLogs, setWaterToday, addLog, removeLog, replaceLog } = useDiaryStore()
 
   const fetchTodayLogs = useCallback(async () => {
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     const { data, error } = await supabase
       .from('food_log')
       .select('*')
@@ -36,7 +37,7 @@ export function useDiary() {
   }, [removeLog])
 
   const fetchTodayWater = useCallback(async () => {
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     const { data } = await supabase
       .from('water_log')
       .select('amount_ml')
@@ -46,7 +47,7 @@ export function useDiary() {
   }, [setWaterToday])
 
   const addWater = useCallback(async (amount_ml: number) => {
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     await supabase.from('water_log').insert({ date: today, amount_ml })
     setWaterToday(waterToday + amount_ml)
   }, [waterToday, setWaterToday])

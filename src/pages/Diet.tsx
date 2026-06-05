@@ -3,6 +3,7 @@ import { PageHeader } from '../components/layout/PageHeader'
 import { PageTransition } from '../components/layout/PageTransition'
 import { useDiet } from '../hooks/useDiet'
 import { useDiary } from '../hooks/useDiary'
+import { localDateStr } from '../lib/dateUtils'
 import type { DietEntry, FoodLog } from '../types'
 
 const MEAL_ORDER: string[] = ['breakfast', 'lunch', 'snack', 'dinner']
@@ -95,7 +96,7 @@ export function Diet() {
 
   async function handleUseToday(entry: DietEntry) {
     const meal = isValidMealType(entry.meal_type) ? entry.meal_type : 'snack'
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     await addFoodLog({
       date: today,
       meal_type: meal,

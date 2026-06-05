@@ -8,6 +8,7 @@ import { PageTransition } from '../components/layout/PageTransition'
 import { SettingsModal } from '../components/settings/SettingsModal'
 import { loadMealGoals, type MealGoals } from '../lib/mealGoals'
 import { loadEnergy } from '../lib/energy'
+import { localDateStr } from '../lib/dateUtils'
 import { useExercise } from '../hooks/useExercise'
 import type { ExerciseCache } from '../types'
 import { useDiary } from '../hooks/useDiary'
@@ -115,7 +116,7 @@ export function Home() {
     }
     const weight = loadEnergy().weight || 70
     const kcal = Math.round(strengthEx.kcal_por_kg_por_minuto * weight * minutes)
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     await addExerciseLog({
       date: today, type: 'strength',
       exercise_name: strengthEx.exercicio,
@@ -134,7 +135,7 @@ export function Home() {
     if (!ex) return
     const weight = loadEnergy().weight || 70
     const kcal = Math.round(ex.kcal_por_kg_por_minuto * weight * cardioMin)
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     await addExerciseLog({
       date: today, type: 'cardio',
       exercise_name: selExercise.exercicio,

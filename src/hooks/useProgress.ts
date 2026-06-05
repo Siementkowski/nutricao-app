@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '../lib/supabase'
+import { localDateStr } from '../lib/dateUtils'
 import type { WeightLog } from '../types'
 
 export interface DayAdherence {
@@ -18,13 +19,13 @@ export function useProgress() {
     const { data } = await supabase
       .from('weight_log')
       .select('*')
-      .gte('date', from.toISOString().split('T')[0])
+      .gte('date', from.toLocaleDateString('en-CA'))
       .order('date', { ascending: true })
     if (data) setWeightLogs(data as WeightLog[])
   }, [])
 
   const logWeight = useCallback(async (weight_kg: number, body_fat_pct?: number, notes?: string) => {
-    const today = new Date().toISOString().split('T')[0]
+    const today = new Date().toLocaleDateString('en-CA')
     const { data } = await supabase
       .from('weight_log')
       .insert({ date: today, weight_kg, body_fat_pct: body_fat_pct ?? null, notes: notes ?? null })
@@ -36,7 +37,7 @@ export function useProgress() {
   const fetchAdherence = useCallback(async (kcalGoal: number, days = 60) => {
     const from = new Date()
     from.setDate(from.getDate() - (days - 1))
-    const fromStr = from.toISOString().split('T')[0]
+    const fromStr = from.toLocaleDateString('en-CA')
 
     const { data } = await supabase
       .from('food_log')
@@ -54,7 +55,7 @@ export function useProgress() {
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date()
       d.setDate(d.getDate() - i)
-      const dateStr = d.toISOString().split('T')[0]
+      const dateStr = d.toLocaleDateString('en-CA')
       const kcal = byDate.get(dateStr) ?? 0
 
       let status: DayAdherence['status'] = 'none'

@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect, useCallback, useRef } from 'react'
 import { useFoods } from '../../hooks/useFoods'
 import { useDiary } from '../../hooks/useDiary'
+import { localDateStr } from '../../lib/dateUtils'
 import type { FoodLog, Food } from '../../types'
 
 type MealType = FoodLog['meal_type']
@@ -138,7 +139,7 @@ export function AddFoodModal({ open, defaultMeal, onClose }: AddFoodModalProps) 
   const handleAdd = useCallback(async () => {
     if (!selected || !qty || +qty <= 0 || !preview) return
     onClose() // fecha imediatamente — optimistic update cuida do resto
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     addFoodLog({
       date: today,
       meal_type: meal,

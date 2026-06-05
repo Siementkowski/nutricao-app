@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
+import { localDateStr } from '../lib/dateUtils'
 import type { ExerciseLog, ExerciseCache } from '../types'
 
 export type { ExerciseLog, ExerciseCache }
@@ -9,7 +10,7 @@ export function useExercise() {
   const [exerciseCache, setExerciseCache] = useState<ExerciseCache[]>([])
 
   const fetchTodayExercise = useCallback(async () => {
-    const today = new Date().toISOString().split('T')[0]
+    const today = localDateStr()
     const { data, error } = await supabase
       .from('exercise_log')
       .select('*')
