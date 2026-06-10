@@ -6,7 +6,7 @@ import type { WeightLog } from '../types'
 export interface DayAdherence {
   date: string
   kcal: number
-  status: 'on' | 'near' | 'over' | 'none'
+  status: 'on' | 'deficit' | 'surplus' | 'none'
 }
 
 export function useProgress() {
@@ -66,10 +66,11 @@ export function useProgress() {
 
       let status: DayAdherence['status'] = 'none'
       if ((consumed.get(dateStr) ?? 0) > 0) {
-        const diff = kcal - kcalGoal
+        const net = (consumed.get(dateStr) ?? 0) - (burned.get(dateStr) ?? 0)
+        const diff = net - kcalGoal
         if (Math.abs(diff) <= 100) status = 'on'
-        else if (Math.abs(diff) <= 200) status = 'near'
-        else status = 'over'
+        else if (diff < -100) status = 'deficit'
+        else status = 'surplus'
       }
 
       result.push({ date: dateStr, kcal, status })

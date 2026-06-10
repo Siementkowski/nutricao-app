@@ -10,17 +10,17 @@ import { useProgress } from '../hooks/useProgress'
 import { useUserStore } from '../store/userStore'
 
 const STATUS_COLOR: Record<string, string> = {
-  on: '#2D7D46',
-  near: '#4CAF6E',
-  over: '#C4501A',
-  none: '#EBEBEB',
+  on:      '#3B8EC4',
+  deficit: '#2D7D46',
+  surplus: '#C4501A',
+  none:    '#EBEBEB',
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  on: '±100 kcal',
-  near: '±200 kcal',
-  over: 'Acima',
-  none: 'Sem dado',
+  on:      'Na meta',
+  deficit: 'Déficit',
+  surplus: 'Superávit',
+  none:    'Sem dado',
 }
 
 function formatChartDate(dateStr: string) {
@@ -73,14 +73,15 @@ export function Progress() {
   // Adherence stats
   const daysWithData = adherence.filter(d => d.status !== 'none')
   const daysOnTarget = adherence.filter(d => d.status === 'on').length
+  const daysDeficit = adherence.filter(d => d.status === 'deficit').length
   const pctAdherence = daysWithData.length
     ? Math.round((daysOnTarget / daysWithData.length) * 100)
     : 0
 
-  // Streak: consecutive days from today going back with status on/near
+  // Streak: consecutive days from today going back with status on or deficit
   let streak = 0
   for (let i = adherence.length - 1; i >= 0; i--) {
-    if (adherence[i].status === 'on' || adherence[i].status === 'near') streak++
+    if (adherence[i].status === 'on' || adherence[i].status === 'deficit') streak++
     else break
   }
 
@@ -221,19 +222,20 @@ export function Progress() {
             </div>
 
             {/* Metrics */}
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-4 gap-2">
               {[
-                { label: 'Na meta', value: daysOnTarget, unit: 'dias' },
-                { label: 'Aderência', value: `${pctAdherence}`, unit: '%' },
-                { label: 'Sequência', value: streak, unit: 'dias' },
-              ].map(({ label, value, unit }) => (
+                { label: 'Na meta', value: daysOnTarget, unit: 'dias', color: '#3B8EC4', bg: '#EDF4FB' },
+                { label: 'Déficit', value: daysDeficit, unit: 'dias', color: '#2D7D46', bg: '#E8F5ED' },
+                { label: 'Aderência', value: `${pctAdherence}`, unit: '%', color: '#2D7D46', bg: '#E8F5ED' },
+                { label: 'Sequência', value: streak, unit: 'dias', color: '#2D7D46', bg: '#E8F5ED' },
+              ].map(({ label, value, unit, color, bg }) => (
                 <div
                   key={label}
                   className="rounded-xl p-3 text-center"
-                  style={{ backgroundColor: '#E8F5ED' }}
+                  style={{ backgroundColor: bg }}
                 >
                   <p className="text-xs mb-1" style={{ color: '#999999', fontWeight: 300 }}>{label}</p>
-                  <p className="text-lg" style={{ color: '#2D7D46', fontWeight: 600 }}>
+                  <p className="text-lg" style={{ color, fontWeight: 600 }}>
                     {value}
                     <span className="text-xs ml-0.5" style={{ fontWeight: 300, color: '#999999' }}>{unit}</span>
                   </p>
