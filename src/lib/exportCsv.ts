@@ -11,11 +11,13 @@ function escapeCsv(val: unknown): string {
 }
 
 export function downloadCsv(filename: string, rows: Row[], columns: Column[]) {
-  const header = columns.map(c => c.label).join(',')
+  const sep = ';'
+  const header = columns.map(c => c.label).join(sep)
   const body = rows
-    .map(row => columns.map(c => escapeCsv(row[c.key])).join(','))
+    .map(row => columns.map(c => escapeCsv(row[c.key])).join(sep))
     .join('\n')
-  const csv = header + '\n' + body
+  // sep= instrui o Excel BR a usar ; como delimitador
+  const csv = `sep=${sep}\n` + header + '\n' + body
   // BOM para Excel abrir com acentos corretamente
   const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
