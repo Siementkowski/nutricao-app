@@ -6,6 +6,7 @@ import {
 import { PageHeader } from '../components/layout/PageHeader'
 import { PageTransition } from '../components/layout/PageTransition'
 import { LogWeightModal } from '../components/progress/LogWeightModal'
+import { ExportModal } from '../components/progress/ExportModal'
 import { useProgress } from '../hooks/useProgress'
 import { useUserStore } from '../store/userStore'
 
@@ -50,7 +51,8 @@ function CustomTooltip({ active, payload, label }: TooltipProps) {
 export function Progress() {
   const { weightLogs, adherence, fetchWeightLogs, logWeight, fetchAdherence } = useProgress()
   const { goals } = useUserStore()
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen]     = useState(false)
+  const [exportOpen, setExportOpen]   = useState(false)
 
   useEffect(() => {
     fetchWeightLogs(30)
@@ -93,16 +95,30 @@ export function Progress() {
           title="Progresso"
           subtitle="Evolução ao longo do tempo"
           action={
-            <button
-              onClick={() => setModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs"
-              style={{ backgroundColor: '#E8F5ED', color: '#2D7D46', fontWeight: 500 }}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Peso
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setExportOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs"
+                style={{ backgroundColor: '#F5F5F5', color: '#555555', fontWeight: 500 }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                CSV
+              </button>
+              <button
+                onClick={() => setModalOpen(true)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs"
+                style={{ backgroundColor: '#E8F5ED', color: '#2D7D46', fontWeight: 500 }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Peso
+              </button>
+            </div>
           }
         />
 
@@ -255,6 +271,11 @@ export function Progress() {
           await logWeight(w, fat, notes)
           await fetchWeightLogs(30)
         }}
+      />
+
+      <ExportModal
+        open={exportOpen}
+        onClose={() => setExportOpen(false)}
       />
     </>
   )
