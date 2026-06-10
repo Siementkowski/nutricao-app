@@ -56,24 +56,26 @@ export function useProgress() {
       burned.set(row.date, (burned.get(row.date) ?? 0) + row.kcal_burned)
     }
 
-    // Build 60-day array oldest → newest (kcal líquidas = consumidas - gastas)
+    // Build 60-day array oldest → newest (saldo = meta - (consumidas - treino))
     const result: DayAdherence[] = []
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date()
       d.setDate(d.getDate() - i)
       const dateStr = d.toLocaleDateString('en-CA')
-      const kcal = Math.max(0, (consumed.get(dateStr) ?? 0) - (burned.get(dateStr) ?? 0))
+
+      const consumedDay = consumed.get(dateStr) ?? 0
+      const burnedDay   = burned.get(dateStr) ?? 0
+      const net         = consumedDay - burnedDay
+      const saldo       = kcalGoal - net   // positivo = déficit, negativo = superávit
 
       let status: DayAdherence['status'] = 'none'
-      if ((consumed.get(dateStr) ?? 0) > 0) {
-        const net = (consumed.get(dateStr) ?? 0) - (burned.get(dateStr) ?? 0)
-        const diff = net - kcalGoal
-        if (Math.abs(diff) <= 100) status = 'on'
-        else if (diff < -100) status = 'deficit'
-        else status = 'surplus'
+      if (consumedDay > 0) {
+        if (Math.abs(saldo) <= 100) status = 'on'
+        else if (saldo > 100)       status = 'deficit'
+        else                        status = 'surplus'
       }
 
-      result.push({ date: dateStr, kcal, status })
+      result.push({ date: dateStr, kcal: saldo, status })
     }
     setAdherence(result)
   }, [])

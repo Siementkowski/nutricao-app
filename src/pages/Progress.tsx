@@ -203,7 +203,7 @@ export function Progress() {
                     animation: 'fadeIn 0.3s ease both',
                     animationDelay: `${index * 10}ms`,
                   }}
-                  title={`${day.date}: ${day.status === 'none' ? 'sem registro' : `${Math.round(day.kcal)} kcal`}`}
+                  title={`${day.date}: ${day.status === 'none' ? 'sem registro' : `saldo ${day.kcal >= 0 ? '+' : ''}${Math.round(day.kcal)} kcal`}`}
                 />
               ))}
             </div>
