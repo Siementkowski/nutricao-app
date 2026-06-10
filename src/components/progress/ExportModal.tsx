@@ -46,69 +46,73 @@ export function ExportModal({ open, onClose }: ExportModalProps) {
     ])
 
     const prefix = `nutricao_${from}_${to}`
-    let files = 0
-    const delay = () => new Promise(r => setTimeout(r, 250))
 
-    if (foodRes.data?.length) {
-      downloadCsv(`${prefix}_diario.csv`,
-        foodRes.data.map(r => ({ ...r, meal_type: MEAL_LABELS[r.meal_type] ?? r.meal_type })),
-        [
-          { key: 'date',        label: 'Data'           },
-          { key: 'meal_type',   label: 'Refeicao'       },
-          { key: 'food_name',   label: 'Alimento'       },
-          { key: 'quantity_g',  label: 'Quantidade (g)' },
-          { key: 'kcal',        label: 'Kcal'           },
-          { key: 'protein',     label: 'Proteina (g)'   },
-          { key: 'carbs',       label: 'Carboidrato (g)'},
-          { key: 'fat',         label: 'Gordura (g)'    },
-        ]
-      )
-      files++
-      await delay()
+    // Monta tabela unificada — todas as linhas com mesmas colunas
+    type UnifiedRow = {
+      Data: string; Categoria: string; Detalhe: string; Nome: string
+      Quantidade_g: string; Duracao_min: string; Kcal: string
+      Proteina_g: string; Carboidrato_g: string; Gordura_g: string
+      Kcal_queimadas: string; Peso_kg: string; Gordura_corporal_pct: string
+      Agua_ml: string; Notas: string
+    }
+    const empty = (): UnifiedRow => ({
+      Data: '', Categoria: '', Detalhe: '', Nome: '',
+      Quantidade_g: '', Duracao_min: '', Kcal: '',
+      Proteina_g: '', Carboidrato_g: '', Gordura_g: '',
+      Kcal_queimadas: '', Peso_kg: '', Gordura_corporal_pct: '',
+      Agua_ml: '', Notas: '',
+    })
+
+    const rows: UnifiedRow[] = []
+
+    for (const r of foodRes.data ?? []) {
+      rows.push({ ...empty(), Data: r.date, Categoria: 'Diario', Detalhe: MEAL_LABELS[r.meal_type] ?? r.meal_type,
+        Nome: r.food_name, Quantidade_g: String(r.quantity_g), Kcal: String(r.kcal),
+        Proteina_g: String(r.protein), Carboidrato_g: String(r.carbs), Gordura_g: String(r.fat) })
+    }
+    for (const r of exerciseRes.data ?? []) {
+      rows.push({ ...empty(), Data: r.date, Categoria: 'Exercicio', Detalhe: TYPE_LABELS[r.type] ?? r.type,
+        Nome: r.exercise_name ?? '', Duracao_min: String(r.duration_min),
+        Kcal_queimadas: String(r.kcal_burned) })
+    }
+    for (const r of weightRes.data ?? []) {
+      rows.push({ ...empty(), Data: r.date, Categoria: 'Peso',
+        Peso_kg: String(r.weight_kg), Gordura_corporal_pct: r.body_fat_pct != null ? String(r.body_fat_pct) : '',
+        Notas: r.notes ?? '' })
+    }
+    for (const r of waterRes.data ?? []) {
+      rows.push({ ...empty(), Data: r.date, Categoria: 'Agua', Agua_ml: String(r.amount_ml) })
     }
 
-    if (exerciseRes.data?.length) {
-      downloadCsv(`${prefix}_exercicios.csv`,
-        exerciseRes.data.map(r => ({ ...r, type: TYPE_LABELS[r.type] ?? r.type })),
-        [
-          { key: 'date',          label: 'Data'            },
-          { key: 'type',          label: 'Tipo'            },
-          { key: 'exercise_name', label: 'Exercicio'       },
-          { key: 'intensity',     label: 'Intensidade'     },
-          { key: 'duration_min',  label: 'Duracao (min)'   },
-          { key: 'kcal_burned',   label: 'Kcal Queimadas'  },
-        ]
-      )
-      files++
-      await delay()
-    }
-
-    if (weightRes.data?.length) {
-      downloadCsv(`${prefix}_peso.csv`, weightRes.data, [
-        { key: 'date',         label: 'Data'       },
-        { key: 'weight_kg',    label: 'Peso (kg)'  },
-        { key: 'body_fat_pct', label: '% Gordura'  },
-        { key: 'notes',        label: 'Notas'      },
-      ])
-      files++
-      await delay()
-    }
-
-    if (waterRes.data?.length) {
-      downloadCsv(`${prefix}_agua.csv`, waterRes.data, [
-        { key: 'date',      label: 'Data'      },
-        { key: 'amount_ml', label: 'Agua (ml)' },
-      ])
-      files++
-    }
+    // Ordena por data
+    rows.sort((a, b) => a.Data.localeCompare(b.Data))
 
     setLoading(false)
-    if (files === 0) {
+    if (rows.length === 0) {
       setResult('Nenhum dado encontrado no período.')
-    } else {
-      setResult(`${files} arquivo${files > 1 ? 's' : ''} baixado${files > 1 ? 's' : ''} com sucesso.`)
-      setTimeout(() => { setResult(null); onClose() }, 2000)
+      return
     }
+
+    downloadCsv(`${prefix}.csv`, rows, [
+      { key: 'Data',                  label: 'Data'                },
+      { key: 'Categoria',             label: 'Categoria'           },
+      { key: 'Detalhe',               label: 'Detalhe'             },
+      { key: 'Nome',                  label: 'Nome'                },
+      { key: 'Quantidade_g',          label: 'Quantidade (g)'      },
+      { key: 'Duracao_min',           label: 'Duracao (min)'       },
+      { key: 'Kcal',                  label: 'Kcal'                },
+      { key: 'Proteina_g',            label: 'Proteina (g)'        },
+      { key: 'Carboidrato_g',         label: 'Carboidrato (g)'     },
+      { key: 'Gordura_g',             label: 'Gordura (g)'         },
+      { key: 'Kcal_queimadas',        label: 'Kcal Queimadas'      },
+      { key: 'Peso_kg',               label: 'Peso (kg)'           },
+      { key: 'Gordura_corporal_pct',  label: 'Gordura Corporal (%)'},
+      { key: 'Agua_ml',               label: 'Agua (ml)'           },
+      { key: 'Notas',                 label: 'Notas'               },
+    ])
+
+    setResult(`${rows.length} registros exportados.`)
+    setTimeout(() => { setResult(null); onClose() }, 2000)
   }
 
   if (!open) return null
@@ -137,7 +141,7 @@ export function ExportModal({ open, onClose }: ExportModalProps) {
               Exportar histórico
             </h2>
             <p className="text-xs mt-0.5" style={{ color: '#999999', fontWeight: 300 }}>
-              Diário · Exercícios · Peso · Água — CSV
+              Diário · Exercícios · Peso · Água — 1 arquivo CSV
             </p>
           </div>
           <button onClick={onClose} style={{ color: '#999999' }}>
